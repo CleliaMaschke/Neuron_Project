@@ -9,7 +9,9 @@ Neuron::~Neuron() {}
 Neuron::Neuron(Neuron const& other)
 : spike(other.spike), potential(other.potential) {}
 
-void Neuron::update(double dt, double Iext)
+
+
+bool Neuron::update(double dt, double Iext)
 {
 	double cte1 = exp(-dt / tau);
 	time_ += dt;
@@ -22,10 +24,14 @@ void Neuron::update(double dt, double Iext)
 		time_refractaire = 2;
 		potential = 0.0;
 		++spike;
+		return true;
 	}
 	if(potential < potential_seuil and time_refractaire <= 0) {
-		potential = (cte1 * potential + resistance * Iext * (1 - cte1));
+		potential = (cte1 * potential + resistance * Iext * (1 - cte1) + n_J);
+		n_J = 0.0;
 	}
+	
+	return false;
 }
 
 double Neuron::getMembranePotential() const
@@ -50,7 +56,10 @@ void Neuron::getTime_(double t)
 	time_ = t;
 }
 
-
+void Neuron::sumInput(double J)
+{
+	n_J += J;
+}
 
 
 
