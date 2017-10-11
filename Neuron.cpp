@@ -17,12 +17,19 @@ bool Neuron::update(double dt, double Iext, double t_start)
 	time_refractaire -= dt;
 	
 	if(potential > potential_seuil) {
+		last_spike_ = (dt * step + t_start);
 		time_spike.push_back(dt * step + t_start); //ajoute au tableau le moment où le spike à lieu
 		time_refractaire = 2.0;
 		potential = 0.0;
 		++spike;
 		return true;
 	}
+	
+	/*if ( (dt * step + t_start) == ( last_spike_ + t_delay)) {
+		
+		return true;
+	}*/
+	
 	
 	if(time_refractaire > 0) {
 		potential = 0.0;

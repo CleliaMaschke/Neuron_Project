@@ -25,10 +25,11 @@ class Neuron
 	long potential_seuil = 20.0; //seuil en dessous duquel pas de spike
 	double time_refractaire = 0.0; //temps de réfractation entre deux spikes
 	double time_; //temps depuit le début de l'expérience
-	//const double J = 0.1; //[mV]
+	const double J = 0.1; //[mV]
 	double n_J = 0.0; //number of input of other neuron 
-	//double t_delay = 1.5; //time to delay 
+	double t_delay = 1.5; //time to delay 
 	int step = 0; //number of step dt 
+	double last_spike_ = 0.0;
 	
 	
 	public:
