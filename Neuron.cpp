@@ -11,26 +11,27 @@ Neuron::Neuron(Neuron const& other)
 
 
 
-bool Neuron::update(double dt, double Iext)
+bool Neuron::update(double dt, double Iext, double t_start)
 {
 	double cte1 = exp(-dt / tau);
-	time_ += dt;
 	time_refractaire -= dt;
 	
-	if(time_refractaire > 0) {
-		potential = 0.0;
-	} else if(potential > potential_seuil) {
-		time_spike.push_back(time_); //ajoute au tableau le moment où le spike à lieu
-		time_refractaire = 2;
+	if(potential > potential_seuil) {
+		time_spike.push_back(dt * step + t_start); //ajoute au tableau le moment où le spike à lieu
+		time_refractaire = 2.0;
 		potential = 0.0;
 		++spike;
 		return true;
 	}
-	if(potential < potential_seuil and time_refractaire <= 0) {
+	
+	if(time_refractaire > 0) {
+		potential = 0.0;
+	} else {
 		potential = (cte1 * potential + resistance * Iext * (1 - cte1) + n_J);
 		n_J = 0.0;
 	}
 	
+	++step;
 	return false;
 }
 

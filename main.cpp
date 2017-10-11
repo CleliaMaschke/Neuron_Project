@@ -38,9 +38,9 @@ int main ()
 		
 			
 		while(simtime < time_stop) {
-			simtime += dt;
+			
 			for(int i(0); i < neurons.size(); ++i) {
-				bool spikeneuro(neurons[i]->update(dt, Iext));
+				bool spikeneuro(neurons[i]->update(dt, Iext, time_start));
 				if(spikeneuro and i+1 < neurons.size()) {
 					neurons[i+1]->sumInput(J);
 				}
@@ -51,6 +51,7 @@ int main ()
 					std::cout << "Problem with Neuron.txt, save impossible" << std::endl;
 				}		
 			}
+			simtime += dt;
 		}
 	} else {
 		Iext = 0.0;

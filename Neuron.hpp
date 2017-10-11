@@ -2,10 +2,19 @@
 #define Neuron_HPP
 #include <iostream>
 #include <vector>
-// problème avec les valeurs [100;400] avec Iext = 1.01
+
+#ifdef TEST
+#include <gtest/gtest_prod.h>
+#endif
+
 class Neuron
 {
 	private :
+	
+		#ifdef TEST
+	FRIEND_TEST (Neuron_Test, calculate_potential)
+		
+		#endif
 	
 	unsigned int spike; //Number of spikes
 	double potential; //potential
@@ -14,11 +23,12 @@ class Neuron
 	const double tau = 20.0; //tau = resistance * capacity
 	const double resistance = 20.0; //= tau / capacity; //résistance du neurone 
 	long potential_seuil = 20.0; //seuil en dessous duquel pas de spike
-	double time_refractaire = 2.0; //temps de réfractation entre deux spikes
+	double time_refractaire = 0.0; //temps de réfractation entre deux spikes
 	double time_; //temps depuit le début de l'expérience
 	//const double J = 0.1; //[mV]
 	double n_J = 0.0; //number of input of other neuron 
 	//double t_delay = 1.5; //time to delay 
+	int step = 0; //number of step dt 
 	
 	
 	public:
@@ -29,7 +39,7 @@ class Neuron
 	
 	Neuron(Neuron const& other); //constructreur de copie
 	
-	bool update(double dt, double Iext); //calcule le potentiel au temps t+dt
+	bool update(double dt, double Iext, double t_start); //calcule le potentiel au temps t+dt
 	
 	double getMembranePotential() const; //Renvoie la valeur du potentiel membranaire
 	
