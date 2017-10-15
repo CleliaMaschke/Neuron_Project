@@ -27,6 +27,9 @@ class Cortex
 	//Time of the programm
 	double Clock_ = 0.0;
 	
+	//nombre de step
+	long Step_Clock_ = 0;
+	
 	public : 
 	
 	//Constructor

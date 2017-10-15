@@ -11,18 +11,23 @@ Neuron::Neuron(Neuron const& other)
 
 
 
+
+
+
 bool Neuron::update(double dt, double Iext, double t_start)
 {
 	double cte1 = exp(-dt / tau);
 	//time_refractaire -= dt;
 	--step_refractory;
+	
 	std::cout << "Dans Neuron::update " << std::endl;
+	
 	if(potential > potential_seuil) {
-		last_spike_ = (dt * step + t_start);
+		//last_spike_ = (dt * step + t_start);
 		step_refractory = time_refractaire / dt;
 		time_spike.push_back(dt * step + t_start); //ajoute au tableau le moment où le spike à lieu
-		time_refractaire = 2.0;
-		potential = 0.0;
+		//time_refractaire = 2.0;
+		//potential = 0.0;
 		++spike;
 		return true;
 	}

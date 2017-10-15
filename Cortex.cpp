@@ -20,26 +20,34 @@ void Cortex::initialise_neuron(double t_start)
 	}
 }
 
+
 void Cortex::update_neuron(double t_start, double t_stop, double Iext) 
-{
+{	
+	std::cout << "Time stop" << t_stop << std::endl;
 	if( (t_start <= Clock_) and (Clock_ < t_stop ))  //condition [time_start, time_stop[
 	{ 
+		
 		while(Clock_ < t_stop) {
 			for(int i(0); i < neurons.size(); ++i) {
 				std::cout << "Dans la boucle update_neuron" << std::endl;
 				bool spikeneuro(neurons[i]->update(dt, Iext, t_start));
 				if(spikeneuro and (i+1) < neurons.size()) {
+					std::cout << "if dans update_neuron" << std::endl;
 					//neurons[i+1]->sumInput(J);
-					size_t m = neurons[i+1]->getRingBuffer().size();
-					int num = neurons[i+1]->getStep();
-					neurons[i+1]->setRingBuffer(num % m, J);
+					size_t m = 5; //neurons[i+1]->getRingBuffer().size();
+					std::cout << "taille de Ring_Buffer_ : " << m << std::endl;
+					//int num = neurons[i+1]->getStep();
+					neurons[i+1]->setRingBuffer(Step_Clock_ % m, J);
 				}
 			}
-			Clock_ += dt;
+			++Step_Clock_ ;
+			std::cout << "Step_clock : " << Step_Clock_ << std::endl;
 		}
 	} else {
 		Iext = 0.0;
 	}
+	Clock_ = Step_Clock_ * dt + t_start;
+	std::cout << "Clock: " << Clock_ << std::endl;
 }
 
 void Cortex::load_from_file() {
