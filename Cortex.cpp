@@ -1,12 +1,13 @@
+
 #include "Cortex.hpp"
 #include <cmath>
 
-/*Cortex::Cortex()
-: Clock_(0.0) {}
+Cortex::Cortex() {};
 
-Cortex::~Cortex() {}
+Cortex::~Cortex() {};
 
-Cortex(Cortex const& other) {}*/
+Cortex::Cortex(Cortex const& other)
+: neurons(other.neurons) {};
 
 void Cortex::initialise_neuron(double t_start)
 {
@@ -14,6 +15,7 @@ void Cortex::initialise_neuron(double t_start)
 	{ 
 		neurons.push_back(new Neuron);
 		neurons[i]->getTime_(t_start);
+		neurons[i]->resetRingBuffer(neurons[i]->getDelay() / dt);
 		
 	}
 }
@@ -24,9 +26,13 @@ void Cortex::update_neuron(double t_start, double t_stop, double Iext)
 	{ 
 		while(Clock_ < t_stop) {
 			for(int i(0); i < neurons.size(); ++i) {
+				std::cout << "Dans la boucle update_neuron" << std::endl;
 				bool spikeneuro(neurons[i]->update(dt, Iext, t_start));
 				if(spikeneuro and (i+1) < neurons.size()) {
-					neurons[i+1]->sumInput(J);
+					//neurons[i+1]->sumInput(J);
+					size_t m = neurons[i+1]->getRingBuffer().size();
+					int num = neurons[i+1]->getStep();
+					neurons[i+1]->setRingBuffer(num % m, J);
 				}
 			}
 			Clock_ += dt;
@@ -67,4 +73,17 @@ void Cortex::setClock(double clock)
 	Clock_  = clock;
 	
 }
+
+void Cortex::Reset()
+{
+	for(auto& neuron : neurons)
+	{
+		delete neuron;
+		neuron = nullptr;
+	}
 	
+	neurons.clear();
+}
+
+
+

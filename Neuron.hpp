@@ -30,6 +30,8 @@ class Neuron
 	double t_delay = 1.5; //time to delay 
 	int step = 0; //number of step dt 
 	double last_spike_ = 0.0;
+	std::vector<double> Ring_Buffer_;
+	long step_refractory = 0;
 	
 	
 	public:
@@ -48,9 +50,19 @@ class Neuron
 	
 	void getTimeSpike() const; //Affiche les moments où ont lieu les spikes
 	
-	void getTime_(double t);
+	void getTime_(double t); //Renvoie le temps du neurone
 	
-	void sumInput(double J);
+	void sumInput(double J); //Additionne les J à un temps dt
+	
+	double getDelay(); //Renvoie le delai entre deux dt
+	
+	std::vector<double> getRingBuffer(); //tableau des pas de temps avec delai
+	
+	void setRingBuffer(size_t i, double J); //Modifie la ring buffer
+	
+	void resetRingBuffer(int i);
+	
+	int getStep();
 	
 };
 

@@ -25,18 +25,18 @@ class Cortex
 	const double dt = 0.1;
 	
 	//Time of the programm
-	double Clock_;
+	double Clock_ = 0.0;
 	
 	public : 
 	
 	//Constructor
-	/*Cortex();
+	Cortex();
 	
 	//Destructor
 	~Cortex(); 
 	
 	//constructreur de copie
-	Cortex(Cortex const& other); */
+	Cortex(Cortex const& other); 
 	
 	//Initialie l'ensemble des vecteurs
 	void initialise_neuron(double t_start);
@@ -52,6 +52,9 @@ class Cortex
 	
 	//Initialise the clock 
 	void setClock(double clock);
+	
+	//Supprime les neurones 
+	void Reset();
 	
 	
 	
