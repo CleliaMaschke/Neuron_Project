@@ -32,17 +32,18 @@ class Neuron
 	double last_spike_ = 0.0;
 	std::vector<double> Ring_Buffer_;
 	long step_refractory = 0;
+	double Iext = 0.0;
 	
 	
 	public:
 	
-	Neuron(); //constructeur 
+	Neuron(double I); //constructeur 
 	
 	~Neuron(); //Destructeur 
 	
 	Neuron(Neuron const& other); //constructreur de copie
 	
-	bool update(double dt, double Iext, double t_start); //calcule le potentiel au temps t+dt
+	bool update(double dt, double t_start); //calcule le potentiel au temps t+dt
 	
 	double getMembranePotential() const; //Renvoie la valeur du potentiel membranaire
 	

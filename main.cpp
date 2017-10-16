@@ -20,15 +20,15 @@ int main ()
 	Cortex c;
 
 	c.setClock(time_start);
-	std::cout << "SetClock()" << std::endl;
-	c.initialise_neuron(time_start);
-	std::cout << "Initialise neurones" << std::endl;
-	c.update_neuron(time_start, time_stop, Iext);
-	std::cout << "Update neuron" << std::endl;
+	//std::cout << "SetClock()" << std::endl;
+	c.initialise_neuron(time_start, Iext);
+	//std::cout << "Initialise neurones" << std::endl;
+	c.update_neuron(time_start, time_stop);
+	//std::cout << "Update neuron" << std::endl;
 	c.time_spike();
-	std::cout << "Time spike" << std::endl;
+	//std::cout << "Time spike" << std::endl;
 	c.Reset();
-	std::cout << "Reset()" << std::endl;
+	//std::cout << "Reset()" << std::endl;
 
 	
 	return 0;

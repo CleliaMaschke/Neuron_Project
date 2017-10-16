@@ -1,8 +1,11 @@
 #include "Neuron.hpp"
 #include <cmath>
 
-Neuron::Neuron()
-: spike(0), potential(0.0) {}
+Neuron::Neuron(double I)
+: spike(0), potential(0.0), Iext(I)
+{
+	
+}
 
 Neuron::~Neuron() {}
 
@@ -10,13 +13,13 @@ Neuron::Neuron(Neuron const& other)
 : spike(other.spike), potential(other.potential) {}
 
 
-bool Neuron::update(double dt, double Iext, double t_start)
+bool Neuron::update(double dt, double t_start)
 {
 	double cte1 = exp(-dt / tau);
 	time_refractaire -= dt;
 	--step_refractory;
 	
-	std::cout << "Dans Neuron::update " << std::endl;
+	//std::cout << "Dans Neuron::update " << std::endl;
 	
 	if(potential > potential_seuil) {
 		//last_spike_ = (dt * step + t_start);

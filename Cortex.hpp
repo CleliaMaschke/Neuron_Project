@@ -2,6 +2,7 @@
 #define Cortex_HPP
 #include <iostream>
 #include <vector>
+#include <cassert>
 #include "Neuron.hpp"
 #include <fstream>
 #ifdef TEST
@@ -42,10 +43,10 @@ class Cortex
 	Cortex(Cortex const& other); 
 	
 	//Initialie l'ensemble des vecteurs
-	void initialise_neuron(double t_start);
+	void initialise_neuron(double t_start, double Iext);
 	
 	//Update the neuron state / potential in time dt
-	void update_neuron(double t_start, double t_stop, double Iext);
+	void update_neuron(double t_start, double t_stop);
 	
 	//write potential, time in a file
 	void load_from_file();
@@ -58,8 +59,6 @@ class Cortex
 	
 	//Supprime les neurones 
 	void Reset();
-	
-	
 	
 	
 };
