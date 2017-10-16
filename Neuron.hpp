@@ -60,7 +60,7 @@ class Neuron
 	
 	void setRingBuffer(size_t i, double J); //Modifie la ring buffer
 	
-	void resetRingBuffer(int i);
+	void resizeRingBuffer(int i);
 	
 	int getStep();
 	
