@@ -102,3 +102,7 @@ int Neuron::getStep()
 	return step;
 }
 
+void Neuron::set_i_ext(double I)
+{
+	Iext = I;
+}

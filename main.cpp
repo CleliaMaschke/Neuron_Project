@@ -29,6 +29,7 @@ int main ()
 	//std::cout << "Time spike" << std::endl;
 	c.Reset();
 	//std::cout << "Reset()" << std::endl;
+	c.load_from_file();
 
 	
 	return 0;

@@ -12,7 +12,7 @@ class Neuron
 	private :
 	
 		#ifdef TEST
-	FRIEND_TEST (Neuron_Test, calculate_potential)
+	FRIEND_TEST (Neuron_Test, calculate_potential);
 		
 		#endif
 	
@@ -64,6 +64,8 @@ class Neuron
 	void resizeRingBuffer(int i);
 	
 	int getStep();
+	
+	void set_i_ext(double I);
 	
 };
 

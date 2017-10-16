@@ -2,9 +2,9 @@
 #include "Cortex.hpp"
 #include <cmath>
 
-Cortex::Cortex() {};
+Cortex::Cortex() {}
 
-Cortex::~Cortex() {};
+Cortex::~Cortex() {}
 
 Cortex::Cortex(Cortex const& other)
 : neurons(other.neurons) {};
