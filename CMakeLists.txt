@@ -15,8 +15,11 @@ add_executable(neuron
 add_executable(neuron_test
 				Neuron.cpp
 				Cortex.cpp
-				Neuron_Test.cpp
+				neuron_test.cpp
 				)
-target_link_libraries(neuron_test gtest gtest_main)
+target_link_libraries(neuron_test 
+				gtest 
+				gtest_main
+				)
 add_test(neuron_test neuron_test)
 

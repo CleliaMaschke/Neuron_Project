@@ -13,35 +13,24 @@ Neuron::Neuron(Neuron const& other)
 : spike(other.spike), potential(other.potential) {}
 
 
-bool Neuron::update(double dt, double t_start)
+bool Neuron::update(long step_clock_)
 {
-	double cte1 = exp(-dt / tau);
-	time_refractaire -= dt;
 	--step_refractory;
 	
 	//std::cout << "Dans Neuron::update " << std::endl;
 	
 	if(potential > potential_seuil) {
-		//last_spike_ = (dt * step + t_start);
-		step_refractory = time_refractaire / dt;
-		time_spike.push_back(dt * step + t_start); //ajoute au tableau le moment où le spike à lieu
-		time_refractaire = 2.0;
+		time_spike.push_back(step_clock_ * dt); //ajoute au tableau le moment où le spike à lieu
 		potential = 0.0;
+		step_refractory = time_refractaire /dt; //ajoute 2 step car 1 step = 0.1 et le temps réfracatire = 0.2
 		++spike;
 		return true;
 	}
 	
-	/*if ( (dt * step + t_start) == ( last_spike_ + t_delay)) {
-		
-		return true;
-	}*/
-	
-	
 	if(step_refractory > 0) {
 		potential = 0.0;
 	} else {
-		potential = (cte1 * potential + resistance * Iext * (1 - cte1) + Ring_Buffer_[step % Ring_Buffer_.size() +1 ]); //+ n_J);
-		//n_J = 0.0;
+		potential = (cte1 * potential + resistance * Iext * (1 - cte1) + Ring_Buffer_[step % Ring_Buffer_.size() +1 ]);
 		Ring_Buffer_[step % Ring_Buffer_.size() +1] = 0.0;
 	}
 	

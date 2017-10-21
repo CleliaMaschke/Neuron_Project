@@ -17,19 +17,31 @@ int main ()
 	std::cout << "Which is Iext during this time? ";
 	std::cin >> Iext;
 	
+	long step_start = time_start / dt;
+	long step_end = time_stop / dt;
+	
 	Cortex c;
 
 	c.setClock(time_start);
 	//std::cout << "SetClock()" << std::endl;
-	c.initialise_neuron(time_start, Iext);
+	
+	c.setStepClock(step_start);
+	
+	c.setStepEnd(step_end);
+	
+	c.initialise_neuron(step_start, Iext);
 	//std::cout << "Initialise neurones" << std::endl;
-	c.update_neuron(time_start, time_stop);
+	
+	c.update_neuron(step_start, step_end);
 	//std::cout << "Update neuron" << std::endl;
-	c.time_spike();
+	
+	c.time_spike();	
+	
+	c.load_from_file();
 	//std::cout << "Time spike" << std::endl;
+	
 	c.Reset();
 	//std::cout << "Reset()" << std::endl;
-	c.load_from_file();
 
 	
 	return 0;
