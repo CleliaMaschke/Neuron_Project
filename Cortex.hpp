@@ -20,12 +20,21 @@ class Cortex
 		#endif 
 	
 	//Number total of neuron
-	const unsigned int Number_Neurons_ = 2;
+	const unsigned int Number_Neurons_ = 12500;
 	
+	const unsigned int Number_Neurons_Excitator = 10000;
 	
+	const unsigned int Number_Neurons_Inhibitor = 2500;
+	
+	const unsigned int Number_Connexion_excitator = 1000;
+	
+	const unsigned int Number_Connexion_inhibitor = 250;
+	
+	//Tableau qui représente les connections entre les neurones s
+	std::vector<std::vector<int>> connexions;
 	
 	//Increase potential of other neuron 
-	const double J = 0.1;
+	//const double J = 0.1; -> change en fonction du type de neuron 
 	
 	//dt
 	//const double dt = 0.1;
@@ -79,6 +88,10 @@ class Cortex
 	
 	//Ajoute l'input au neurons
 	void setNeuronInput(int i, double Input);
+	
+	int Random_Uniform(int size);
+	
+	void Initialise_Connexions();
 	
 };
 

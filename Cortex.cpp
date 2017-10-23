@@ -1,4 +1,5 @@
 #include "Cortex.hpp"
+#include <random>
 
 Cortex::Cortex() {}
 
@@ -9,7 +10,7 @@ Cortex::Cortex(Cortex const& other)
 
 void Cortex::initialise_neuron(long start, double Iext)
 {
-	for(size_t i(0); i < Number_Neurons_; ++i) 
+	/*for(size_t i(0); i < Number_Neurons_; ++i) 
 	{ 
 			if(i == 0) {
 				neurons.push_back(new Neuron(Iext));
@@ -20,7 +21,31 @@ void Cortex::initialise_neuron(long start, double Iext)
 				neurons[i]->getTime_(start * dt);
 				neurons[i]->resizeRingBuffer(neurons[i]->getDelay() / dt + 1);
 			}
+	}*/
+	
+	for(unsigned int i(0); i < Number_Neurons_; ++i) 
+	{
+		connexions.push_back({});
+		for(unsigned int j(0); j < Number_Neurons_; ++j) 
+		{
+			connexions[i].push_back(0);
+		}
 	}
+	
+	for(size_t i(0); i < Number_Neurons_Excitator; ++i)
+	{
+		neurons.push_back(new Neuron(0.1));
+		neurons[i]->getTime_(start * dt);
+		neurons[i]->resizeRingBuffer(neurons[i]->getDelay() / dt + 1);
+	}
+	
+	for(size_t i(Number_Neurons_Excitator); i < Number_Neurons_Inhibitor; ++i)
+	{
+		neurons.push_back(new Neuron(0.5));
+		neurons[i]->getTime_(start * dt);
+		neurons[i]->resizeRingBuffer(neurons[i]->getDelay() / dt + 1);
+	}
+	
 }
 
 
@@ -37,15 +62,19 @@ void Cortex::update_neuron(long Step_start, long Step_end)
 				//std::cout << "Time stop" << std::endl;
 				//std::cout << "Dans la boucle update_neuron" << std::endl;
 				bool spikeneuro(neurons[i]->update(Step_Clock_));
-				if(spikeneuro and (i+1) < neurons.size()) {
+				if(spikeneuro and (! connexions.empty())) {
 					//std::cout << "if dans update_neuron" << std::endl;
 					//neurons[i+1]->sumInput(J);
-					size_t m = neurons[i+1]->getRingBuffer().size();
-					//std::cout << "taille de Ring_Buffer_ : " << m << std::endl;
-					//int num = neurons[i+1]->getStep();
-					const auto t_out = (Step_Clock_ % (m-1));
-					assert(t_out < m);
-					neurons[i+1]->setRingBuffer(t_out, J);
+					for(size_t j(0); j < Number_Neurons_; ++j) 
+					{
+						size_t m = neurons[j]->getRingBuffer().size();
+						//std::cout << "taille de Ring_Buffer_ : " << m << std::endl;
+						//int num = neurons[i+1]->getStep();
+						const auto t_out = (Step_Clock_ % (m-1));
+						int a = connexions[i][j];
+						assert(t_out < m);
+						neurons[j]->setRingBuffer(t_out,a);
+					}
 				}
 			}
 			++Step_Clock_ ;
@@ -112,4 +141,34 @@ void Cortex::setStepEnd(long num)
 void Cortex::setNeuronInput(int i, double Input)
 {
 	neurons[i]->set_i_ext(Input);
+}
+
+int Cortex::Random_Uniform(int size)
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dis(0, size - 1);
+	
+	return dis(gen);
+}
+
+void Cortex::Initialise_Connexions()
+{
+	for(unsigned int i(0); i < Number_Neurons_Excitator; ++i) 
+	{
+		for(unsigned int k(0); k < Number_Connexion_excitator; ++k) 
+		{
+			int ran = Random_Uniform(Number_Neurons_);
+			connexions[i][ran] += 1;
+		}
+	}
+	
+	for(unsigned int i(Number_Neurons_Excitator); i < Number_Neurons_; ++i) 
+	{
+		for(unsigned int k(0); k < Number_Connexion_inhibitor; ++k) 
+		{
+			int ran = Random_Uniform(Number_Neurons_);
+			connexions[i][ran] += 1;
+		}
+	}
 }

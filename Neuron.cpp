@@ -75,10 +75,10 @@ std::vector<double> Neuron::getRingBuffer()
 	return Ring_Buffer_;
 }
 
-void Neuron::setRingBuffer(size_t i, double J)
+void Neuron::setRingBuffer(size_t i, int a)
 {
 	
-	Ring_Buffer_[i] += J;
+	Ring_Buffer_[i] += a * J;
 }
 
 void Neuron::resizeRingBuffer(int i)

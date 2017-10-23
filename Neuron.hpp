@@ -27,7 +27,6 @@ class Neuron
 	long potential_seuil = 20.0; //seuil en dessous duquel pas de spike
 	double time_refractaire = 2.0; //temps de réfractation entre deux spikes
 	double time_; //temps depuit le début de l'expérience
-	const double J = 0.1; //[mV]
 	double n_J = 0.0; //number of input of other neuron 
 	double t_delay = 1.5; //time to delay 
 	int step = 0; //number of step dt 
@@ -36,11 +35,13 @@ class Neuron
 	long step_refractory = 0;
 	double Iext = 0.0;
 	const double cte1 = exp(-dt / tau);
+	double J;
 	
 	
 	public:
 	std::vector<double> time_spike; //tableau qui note le temps où à lieu le spike
-	Neuron(double I); //constructeur 
+	
+	Neuron(double J); //constructeur 
 	
 	~Neuron(); //Destructeur 
 	
@@ -62,7 +63,7 @@ class Neuron
 	
 	std::vector<double> getRingBuffer(); //tableau des pas de temps avec delai
 	
-	void setRingBuffer(size_t i, double J); //Modifie la ring buffer
+	void setRingBuffer(size_t i, int a); //Modifie la ring buffer
 	
 	void resizeRingBuffer(int i);
 	
