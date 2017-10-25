@@ -6,7 +6,8 @@
 
 TEST(neuron_test, calculate_potential) {
 	
-	Neuron neuron(1.0);
+	Neuron neuron(0.1);
+	neuron.set_i_ext(1.0);
 	neuron.resizeRingBuffer(1);
 	
 	//First update test with dt = 0.1 and step start = 1000 
@@ -24,21 +25,6 @@ TEST(neuron_test, calculate_potential) {
 
 TEST(neuron_test, time_spikes) 
 {
-	/*
-	//Iext = 1.01
-	Neuron neuron(1.01);
-	neuron.resizeRingBuffer(neuron.getDelay() / 0.2 + 1);
-	
-	//Test time between 100 to 400ms
-	for(long i(100); i <= 400; ++i) {
-		neuron.update(0.1, 100);
-	}
-	
-	EXPECT_EQ(neuron.time_spike.size(), 3);
-	EXPECT_FLOAT_EQ(neuron.time_spike[0], 192.4);
-	EXPECT_FLOAT_EQ(neuron.time_spike[1], 286.8);
-	EXPECT_FLOAT_EQ(neuron.time_spike[2], 381.2);
-	* */
 	
 	Cortex cortex;
 	//time start = 100ms and Iext = 1.01

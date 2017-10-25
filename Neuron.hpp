@@ -71,6 +71,8 @@ class Neuron
 	
 	void set_i_ext(double I);
 	
+	//Donne un nombre aléatoire selon loi de poisson
+	double Random_Poisson();
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include "Cortex.hpp"
 #include <random>
+#include <map>
 
 Cortex::Cortex() {}
 
@@ -10,19 +11,6 @@ Cortex::Cortex(Cortex const& other)
 
 void Cortex::initialise_neuron(long start, double Iext)
 {
-	/*for(size_t i(0); i < Number_Neurons_; ++i) 
-	{ 
-			if(i == 0) {
-				neurons.push_back(new Neuron(Iext));
-				neurons[i]->getTime_(start * dt);
-				neurons[i]->resizeRingBuffer(neurons[i]->getDelay() / dt + 1);	
-			} else {
-				neurons.push_back(new Neuron(0.0));
-				neurons[i]->getTime_(start * dt);
-				neurons[i]->resizeRingBuffer(neurons[i]->getDelay() / dt + 1);
-			}
-	}*/
-	
 	for(unsigned int i(0); i < Number_Neurons_; ++i) 
 	{
 		connexions.push_back({});
@@ -38,13 +26,15 @@ void Cortex::initialise_neuron(long start, double Iext)
 		neurons[i]->getTime_(start * dt);
 		neurons[i]->resizeRingBuffer(neurons[i]->getDelay() / dt + 1);
 	}
-	
-	for(size_t i(Number_Neurons_Excitator); i < Number_Neurons_Inhibitor; ++i)
+
+	for(size_t i(Number_Neurons_Excitator); i < Number_Neurons_; ++i)
 	{
 		neurons.push_back(new Neuron(0.5));
 		neurons[i]->getTime_(start * dt);
 		neurons[i]->resizeRingBuffer(neurons[i]->getDelay() / dt + 1);
 	}
+	
+	std::cout << "Neurons.size() = " << neurons.size() << std::endl;
 	
 }
 
@@ -85,18 +75,19 @@ void Cortex::update_neuron(long Step_start, long Step_end)
 	}
 }
 
-void Cortex::load_from_file() {
+void Cortex::Save_to_file() 
+{
 	std::ofstream fichier("Neuron.txt");
-	for(size_t i(0); i < neurons.size(); ++i) {
 	if(!fichier.fail()) {
-					fichier << "Time : " << Clock_ << std::endl;
-					fichier << "Membrane potential : " << neurons[i]->getMembranePotential() << std::endl;
-				} else {
-					std::cout << "Problem with Neuron.txt, save impossible" << std::endl;
-				}	
+		for(size_t i(0); i < neurons.size(); ++i) {
+			fichier << "Time : " << Clock_ << std::endl;
+			fichier << "Membrane potential : " << neurons[i]->getMembranePotential() << std::endl;
+		} 
+		
+	} else {
+			std::cout << "Problem with Neuron.txt, save impossible" << std::endl;
+		}
 	fichier.close();
-	
-	}
 }
 
 void Cortex::time_spike() 
@@ -172,3 +163,5 @@ void Cortex::Initialise_Connexions()
 		}
 	}
 }
+
+

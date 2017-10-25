@@ -30,18 +30,18 @@ int main ()
 	c.setStepEnd(step_end);
 	
 	c.initialise_neuron(step_start, Iext);
-	//std::cout << "Initialise neurones" << std::endl;
+	std::cout << "Initialise neurones" << std::endl;
 	
 	c.update_neuron(step_start, step_end);
-	//std::cout << "Update neuron" << std::endl;
+	std::cout << "Update neuron" << std::endl;
 	
-	c.time_spike();	
+	//c.time_spike();	
 	
-	c.load_from_file();
-	//std::cout << "Time spike" << std::endl;
+	c.Save_to_file();
+	std::cout << "Time spike" << std::endl;
 	
 	c.Reset();
-	//std::cout << "Reset()" << std::endl;
+	std::cout << "Reset()" << std::endl;
 
 	
 	return 0;

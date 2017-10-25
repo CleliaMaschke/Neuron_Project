@@ -69,7 +69,7 @@ class Cortex
 	void update_neuron(long Step_start, long Step_end);
 	
 	//write potential, time in a file
-	void load_from_file();
+	void Save_to_file();
 	
 	//write the time when spike occures
 	void time_spike();
@@ -89,8 +89,10 @@ class Cortex
 	//Ajoute l'input au neurons
 	void setNeuronInput(int i, double Input);
 	
+	//Donne un nombre au hasard avec la même probabilité pour chacun
 	int Random_Uniform(int size);
 	
+	//Initialise connexions entre les neurones
 	void Initialise_Connexions();
 	
 };
