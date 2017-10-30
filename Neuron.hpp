@@ -63,7 +63,7 @@ class Neuron
 	
 	std::vector<double> getRingBuffer(); //tableau des pas de temps avec delai
 	
-	void setRingBuffer(size_t i, int a); //Modifie la ring buffer
+	void setRingBuffer(size_t i); //Modifie la ring buffer
 	
 	void resizeRingBuffer(int i);
 	

@@ -30,6 +30,8 @@ class Cortex
 	
 	const unsigned int Number_Connexion_inhibitor = 250;
 	
+	const unsigned int Number_Connexion_ = 1250;
+	
 	//Tableau qui représente les connections entre les neurones s
 	std::vector<std::vector<int>> connexions;
 	
@@ -95,7 +97,7 @@ class Cortex
 	void setNeuronInput(int i, double Input);
 	
 	//Donne un nombre au hasard avec la même probabilité pour chacun
-	int Random_Uniform(int size);
+	int Random_Uniform(unsigned int start, unsigned int stop);
 	
 	//Initialise connexions entre les neurones
 	void Initialise_Connexions();
