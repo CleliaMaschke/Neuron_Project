@@ -52,6 +52,9 @@ void Cortex::update_neuron(long Step_start, long Step_end)
 				//std::cout << "Time stop" << std::endl;
 				//std::cout << "Dans la boucle update_neuron" << std::endl;
 				bool spikeneuro(neurons[i]->update(Step_Clock_));
+				if(neurons[i]->getStepRefractory() <= 0) {
+					neurons[i]->setPotentialPoisson();
+				}
 				if(spikeneuro and (! connexions.empty())) {
 					//std::cout << "if dans update_neuron" << std::endl;
 					//neurons[i+1]->sumInput(J);
@@ -76,7 +79,7 @@ void Cortex::update_neuron(long Step_start, long Step_end)
 }
 
 void Cortex::Save_to_file() 
-{
+{ 
 	std::ofstream fichier("Neuron.txt");
 	if(!fichier.fail()) {
 		for(size_t i(0); i < neurons.size(); ++i) {
@@ -91,10 +94,11 @@ void Cortex::Save_to_file()
 }
 
 void Cortex::time_spike() 
-{
+{//file << spike_time << "\t" << neuron[i] << "\n << td::endl;
 	std::ofstream fichier("Time_Spike.txt");
 	if(!fichier.fail()) {
 		for(size_t i(0); i < neurons.size(); ++i) {
+			//fichier << neurons[i]->getTimeSpike() << "\t" << i << "\n" << std::endl;
 			std::cout << "Time when the spikes occured for neuron: " << i << std::endl;
 			neurons[i]->getTimeSpike();
 		}
@@ -145,6 +149,12 @@ int Cortex::Random_Uniform(int size)
 
 void Cortex::Initialise_Connexions()
 {
+	/*std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_ditribution<> exct(0,9999);
+	std::uniform_int_distribution <> inhib(10000, 12499);*/
+	
+	
 	for(unsigned int i(0); i < Number_Neurons_Excitator; ++i) 
 	{
 		for(unsigned int k(0); k < Number_Connexion_excitator; ++k) 

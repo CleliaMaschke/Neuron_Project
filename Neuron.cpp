@@ -2,8 +2,8 @@
 #include <cmath>
 #include <random>
 
-Neuron::Neuron(double I)
-: spike(0), potential(0.0), Iext(I)
+Neuron::Neuron(double j)
+: spike(0), potential(0.0), J(j)
 {
 	
 }
@@ -31,8 +31,10 @@ bool Neuron::update(long step_clock_)
 	if(step_refractory > 0) {
 		potential = 0.0;
 	} else {
-		potential = (cte1 * potential + resistance * Iext * (1 - cte1) + Ring_Buffer_[step % Ring_Buffer_.size() +1] + Random_Poisson() ); //
+		//double pois = Random_Poisson();
+		potential = (cte1 * potential + resistance * Iext * (1 - cte1) + Ring_Buffer_[step % Ring_Buffer_.size() +1] ); //+ pois * Jext
 		Ring_Buffer_[step % Ring_Buffer_.size() +1] = 0.0;
+		//std::cout << "Poisson = " << pois << std::endl;
 	}
 	
 	++step;
@@ -103,9 +105,19 @@ double Neuron::Random_Poisson()
 	std::mt19937 gen(rd());
 	
 	// if an event occurs 0.02 spikes/connection x ms
-	std::poisson_distribution<> d(0.2);
+	std::poisson_distribution<> d(2);
 	
 	//std::cout << "Poisson : " << d(gen) << std::endl;
 	
 	return d(gen);
+}
+
+long Neuron::getStepRefractory()
+{
+	return step_refractory;
+}
+
+void Neuron::setPotentialPoisson()
+{
+	potential += Random_Poisson() * Jext;
 }

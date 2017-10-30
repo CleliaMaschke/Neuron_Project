@@ -41,7 +41,7 @@ class Neuron
 	public:
 	std::vector<double> time_spike; //tableau qui note le temps où à lieu le spike
 	
-	Neuron(double J); //constructeur 
+	Neuron(double j); //constructeur 
 	
 	~Neuron(); //Destructeur 
 	
@@ -71,8 +71,14 @@ class Neuron
 	
 	void set_i_ext(double I);
 	
+	double Jext = 0.1;
+	
 	//Donne un nombre aléatoire selon loi de poisson
 	double Random_Poisson();
+	
+	long getStepRefractory();
+	
+	void setPotentialPoisson();
 };
 
 #endif

@@ -32,10 +32,13 @@ int main ()
 	c.initialise_neuron(step_start, Iext);
 	std::cout << "Initialise neurones" << std::endl;
 	
+	c.Initialise_Connexions();
+	std::cout << "Initialise Connexions" << std::endl;
+	
 	c.update_neuron(step_start, step_end);
 	std::cout << "Update neuron" << std::endl;
 	
-	//c.time_spike();	
+	c.time_spike();	
 	
 	c.Save_to_file();
 	std::cout << "Time spike" << std::endl;
