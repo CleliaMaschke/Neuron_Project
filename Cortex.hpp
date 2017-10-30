@@ -16,11 +16,11 @@ class Cortex
 	
 		#ifdef TEST
 	FRIEND_TEST (neuron_test, calculate_potential);
-	FRIEND_TEST (neuron_test, time_spikes); 
-		#endif 
+	FRIEND_TEST (neuron_test, time_spikes);
+		#endif   
 	
 	//Number total of neuron
-	const unsigned int Number_Neurons_ = 12500;
+	const unsigned int Number_Neurons_ = 12500; /*! */
 	
 	const unsigned int Number_Neurons_Excitator = 10000;
 	
@@ -48,8 +48,13 @@ class Cortex
 	//fin du temps 
 	long Step_End; 
 	
-	public : 
 	
+	
+	public : 
+	/**
+	 * @return 
+	 * @param 
+	 */
 	//Initialise le nombre de neurones
 	std::vector<Neuron*> neurons;
 	
@@ -94,6 +99,8 @@ class Cortex
 	
 	//Initialise connexions entre les neurones
 	void Initialise_Connexions();
+	
+	void Document_Python();
 	
 };
 

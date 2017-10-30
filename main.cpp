@@ -43,6 +43,9 @@ int main ()
 	c.Save_to_file();
 	std::cout << "Time spike" << std::endl;
 	
+	c.Document_Python();
+	std::cout << "Document python" << std::endl;
+	
 	c.Reset();
 	std::cout << "Reset()" << std::endl;
 

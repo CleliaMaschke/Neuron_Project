@@ -121,3 +121,9 @@ void Neuron::setPotentialPoisson()
 {
 	potential += Random_Poisson() * Jext;
 }
+
+std::vector<double> Neuron::getTimeSpikeVector()
+{
+	return time_spike;
+}
+

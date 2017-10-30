@@ -15,8 +15,8 @@ class Neuron
 	
 		#ifdef TEST
 	FRIEND_TEST (neuron_test, calculate_potential);
-	FRIEND_TEST (neuron_test, time_spikes); 
-		#endif 
+	FRIEND_TEST (neuron_test, time_spikes);
+		#endif  
 	
 	unsigned int spike; //Number of spikes
 	double potential; //potential
@@ -79,6 +79,8 @@ class Neuron
 	long getStepRefractory();
 	
 	void setPotentialPoisson();
+	
+	std::vector<double> getTimeSpikeVector();
 };
 
 #endif

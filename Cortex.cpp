@@ -94,16 +94,11 @@ void Cortex::Save_to_file()
 }
 
 void Cortex::time_spike() 
-{//file << spike_time << "\t" << neuron[i] << "\n << td::endl;
-	std::ofstream fichier("Time_Spike.txt");
-	if(!fichier.fail()) {
-		for(size_t i(0); i < neurons.size(); ++i) {
-			//fichier << neurons[i]->getTimeSpike() << "\t" << i << "\n" << std::endl;
+{
+	for(size_t i(0); i < neurons.size(); ++i) {
 			std::cout << "Time when the spikes occured for neuron: " << i << std::endl;
 			neurons[i]->getTimeSpike();
 		}
-	}
-	fichier.close();
 }
 
 void Cortex::setClock(double clock)
@@ -174,4 +169,16 @@ void Cortex::Initialise_Connexions()
 	}
 }
 
-
+void Cortex::Document_Python() 
+{	
+	std::ofstream Time("Doc_python.csv");
+	if(!Time.fail()) {
+		for(size_t i(0); i < neurons.size(); ++i) {
+			std::vector<double> tab = neurons[i]->getTimeSpikeVector();
+			for(size_t j(0); j < tab.size(); ++j) {
+				Time << tab[j] << "\t" << i << "\n";
+			}
+		}
+	}
+	Time.close();
+}
