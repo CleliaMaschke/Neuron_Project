@@ -11,14 +11,6 @@ Cortex::Cortex(Cortex const& other)
 
 void Cortex::initialise_neuron(long start, double Iext, double Ji)
 {
-	/*for(unsigned int i(0); i < Number_Neurons_; ++i) 
-	{
-		connexions.push_back({});
-		for(unsigned int j(0); j < Number_Neurons_; ++j) 
-		{
-			connexions[i].push_back(0);
-		}
-	}*/
 	
 	for(size_t i(0); i < Number_Neurons_Excitator; ++i)
 	{
@@ -156,24 +148,6 @@ void Cortex::Initialise_Connexions()
 			connexions[i].push_back(ran);
 		}
 	}
-	
-	/*for(unsigned int i(0); i < Number_Neurons_Excitator; ++i) 
-	{
-		for(unsigned int k(0); k < Number_Connexion_excitator; ++k) 
-		{
-			int ran = Random_Uniform(Number_Neurons_);
-			connexions[i][ran] += 1;
-		}
-	}
-	
-	for(unsigned int i(Number_Neurons_Excitator); i < Number_Neurons_; ++i) 
-	{
-		for(unsigned int k(0); k < Number_Connexion_inhibitor; ++k) 
-		{
-			int ran = Random_Uniform(Number_Neurons_);
-			connexions[i][ran] += 1;
-		}
-	}*/
 }
 
 void Cortex::Document_Python(std::ofstream &doc) 
@@ -186,5 +160,4 @@ void Cortex::Document_Python(std::ofstream &doc)
 			}
 		}
 	}
-	//doc.close();
 }

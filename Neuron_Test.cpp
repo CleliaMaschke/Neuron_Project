@@ -4,7 +4,7 @@
 #include <cmath>
 #include "gtest/gtest.h"
 
-TEST(neuron_test, calculate_potential) {
+TEST(oneNeuron, calculate_potential) {
 	
 	Neuron neuron(0.1);
 	neuron.set_i_ext(1.0);
@@ -23,30 +23,75 @@ TEST(neuron_test, calculate_potential) {
 	EXPECT_LT(neuron.getMembranePotential(), 20.0);
 }
 
-TEST(neuron_test, time_spikes) 
+TEST(oneNeuron, time_spikes) 
 {
-	
-	Cortex cortex;
-	//time start = 100ms and Iext = 1.01
-	cortex.setStepClock(1000);
-	cortex.setStepEnd(4000);
-	cortex.initialise_neuron(0, 1.01, 0.5);
-	cortex.setNeuronInput(0, 1.01);
-	cortex.setNeuronInput(1, 0.0);
-	
+	Neuron neuron_(0.1);
+	neuron_.set_i_ext(1.01);
+	neuron_.resizeRingBuffer(1);
 	for(long i(1000); i <= 4000; ++i) {
-		cortex.update_neuron(1000, 4000, 2);
+		neuron_.update(i);
 	}
 	
-	EXPECT_EQ(cortex.neurons[0]->time_spike.size(), 3);
-	EXPECT_FLOAT_EQ(cortex.neurons[0]->time_spike[0], 192.4);
-	EXPECT_FLOAT_EQ(cortex.neurons[0]->time_spike[1], 286.8);
-	EXPECT_FLOAT_EQ(cortex.neurons[0]->time_spike[2], 381.2);
-	
-	EXPECT_EQ(cortex.neurons[1]->time_spike.size(), 0);
+	EXPECT_EQ(neuron_.getTimeSpikeVector().size(), 3);
+	EXPECT_FLOAT_EQ(neuron_.getTimeSpikeVector()[0], 192.4);
+	EXPECT_FLOAT_EQ(neuron_.getTimeSpikeVector()[1], 286.8);
+	EXPECT_FLOAT_EQ(neuron_.getTimeSpikeVector()[2], 381.2);
 	
 }
+
+TEST(twoNeuron, Connexion_with_oneSpike) 
+{
+	//Each neuron is excitatory with J = 0.1
+	Neuron n1(0.1); 
+	Neuron n2(0.1);
 	
+	//First neuron recieve an Input externe
+	n1.set_i_ext(1.01);
+	
+	//Resize the buffer
+	n1.resizeRingBuffer(n1.getDelay() / 0.1 + 1);
+	n2.resizeRingBuffer(n2.getDelay() / 0.1 + 1);
+	
+	//First spike at 924 steps + 15 steps of delay
+	for(long i(0); i < 950; ++i) {
+		if(n1.update(i)) { //update neuron 1 and test if he spikes 
+			size_t m = n2.getRingBuffer().size();
+			n2.setRingBuffer((i + m-1) % m); //neuron 2 stores J in his buffer
+			EXPECT_EQ(n1.getMembranePotential(), 0.0); //Neuron 1 has a spike so he has a membrane potential = 0.0
+		}
+		n2.update(i);
+	}
+	
+	EXPECT_EQ(n2.getMembranePotential(), 0.1); //neuron 2 hase a +J because neuron 1 has spiked
+}
+
+TEST(twoNeurons, Connexion_with_twoSpikes)
+{
+	Neuron n1(0.1);
+	Neuron n2(0.1);
+	n1.set_i_ext(1.01);
+	n2.set_i_ext(1.0);
+	n1.resizeRingBuffer(n1.getDelay() / 0.1 + 1);
+	n2.resizeRingBuffer(n2.getDelay() / 0.1 + 1);
+	
+	//Neuron 2 1st spike should occur right after neuron 1 2nd spike
+	for (long i(0); i < 1884; ++i) { //number of steps for neuron 1 to spike twice (1868 steps) + delay (15 steps)
+		if (n1.update(i)) { //update neuron 1
+			size_t m = n2.getRingBuffer().size();
+			n2.setRingBuffer((i + m-1) % m); //neuron 2 stores J in his buffer
+			EXPECT_EQ(n1.getMembranePotential(), 0.0);
+		}
+		n2.update(i);
+	}
+	
+	//neuron 2 has no spike yet
+	EXPECT_EQ(n2.getTimeSpikeVector().size(), 0);
+	n2.update(1884);
+	//neuron 2 spike
+	EXPECT_EQ(n2.getMembranePotential(), 0.0);
+	EXPECT_EQ(n2.getTimeSpikeVector().size(), 1);
+}
+
 
 int main (int argc, char **argv)
 {

@@ -15,12 +15,10 @@ class Cortex
 	private :
 	
 		#ifdef TEST
-	FRIEND_TEST (neuron_test, calculate_potential);
-	FRIEND_TEST (neuron_test, time_spikes);
+	
 		#endif   
 	
-	//Number total of neuron
-	const unsigned int Number_Neurons_ = 12500; /*! */
+	const unsigned int Number_Neurons_ = 12500; 
 	
 	const unsigned int Number_Neurons_Excitator = 10000;
 	
@@ -32,74 +30,67 @@ class Cortex
 	
 	const unsigned int Number_Connexion_ = 1250;
 	
-	//Tableau qui représente les connections entre les neurones s
-	std::vector<std::vector<int>> connexions;
+	std::vector<std::vector<int>> connexions;  /*! vector<vector>> that represent the connexion between the neurons*/
 	
-	//Increase potential of other neuron 
-	//const double J = 0.1; -> change en fonction du type de neuron 
+	double Clock_ = 0.0; /*! Time of the programm */
 	
-	//dt
-	//const double dt = 0.1;
+	long Step_Clock_ = 0; /*! Step of the programm */
 	
-	//Time of the programm
-	double Clock_ = 0.0;
-	
-	//nombre de step
-	long Step_Clock_ = 0;
-	
-	//fin du temps 
 	long Step_End; 
 	
-	
+	std::vector<Neuron*> neurons; /*! Vector of all the neurons */
 	
 	public : 
 	/**
 	 * @return 
 	 * @param 
 	 */
-	//Initialise le nombre de neurones
-	std::vector<Neuron*> neurons;
-	
-	//Constructor
+	 
+	/*! Constructor */
 	Cortex();
 	
-	//Destructor
+	/*! Destructor*/
 	~Cortex(); 
 	
-	//constructreur de copie
+	/*! Copy constructor */
 	Cortex(Cortex const& other); 
 	
-	//Initialie l'ensemble des vecteurs
+	/** Neuron initialisation 
+	 * @param : I ext is normally 0.0
+	 * @param : Ji represents the inhibitor aspects of neurons
+	 * */
 	void initialise_neuron(long start, double Iext, double Ji);
 	
-	//Update the neuron state / potential in time dt
+	/** Update all neurons
+	 * 	@param : ratio = Vthr/Vext = eta
+	 * */
 	void update_neuron(long Step_start, long Step_end, int ratio);
 	
-	//write potential, time in a file
+	/*! Write a file with all the membrane potential and the time*/
 	void Save_to_file();
 	
-	//write the time when spike occures
+	/*! Write the time when spike occures in the terminal */
 	void time_spike();
 	
-	//Initialise the clock 
+	/*! Initialise the clock */
 	void setClock(double clock);
 	
-	//Supprime les neurones 
+	/*! Delete neurones, Warning : neurons is a vector with pointeur */
 	void Reset();
 	
-	//Initialise le step du programme principal
+	/*! Initialise the start step */
 	void setStepClock(long num);
 	
-	//Initiliase la fin du programme 
+	/*! Initialise the stop step */ 
 	void setStepEnd(long num);
 	
-	//Ajoute l'input au neurons
+	/*! Add input in one neuron */
 	void setNeuronInput(int i, double Input);
 	
-	//Donne un nombre au hasard avec la même probabilité pour chacun
+	/*! Give a random number with the same probability for each */
 	int Random_Uniform(unsigned int start, unsigned int stop);
 	
-	//Initialise connexions entre les neurones
+	/*! Initialise the connexions between the neurons */
 	void Initialise_Connexions();
 	
 	/**

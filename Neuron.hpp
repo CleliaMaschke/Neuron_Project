@@ -14,40 +14,63 @@ class Neuron
 	private :
 	
 		#ifdef TEST
-	FRIEND_TEST (neuron_test, calculate_potential);
-	FRIEND_TEST (neuron_test, time_spikes);
+	FRIEND_TEST (oneNeuron, calculate_potential);
+	FRIEND_TEST (oneNeuron, time_spikes);
+	FRIEND_TEST(twoNeuron, Connexion_with_oneSpike);
+	FRIEND_TEST(twoNeurons, Connexion_with_twoSpikes);
 		#endif  
 	
-	unsigned int spike; //Number of spikes
-	double potential; //potential
-	
-	const double capacity = 1.0; //capacité du neurone
+	/*! Const : */
+	const double Jext = 0.1;
 	const double tau = 20.0; //tau = resistance * capacity
-	const double resistance = 20.0; //= tau / capacity; //résistance du neurone 
-	long potential_seuil = 20.0; //seuil en dessous duquel pas de spike
-	double time_refractaire = 2.0; //temps de réfractation entre deux spikes
-	double time_; //temps depuit le début de l'expérience
-	double n_J = 0.0; //number of input of other neuron 
-	double t_delay = 1.5; //time to delay 
-	int step = 0; //number of step dt 
-	double last_spike_ = 0.0;
-	std::vector<double> Ring_Buffer_;
+	const double resistance = 20.0; //= tau / capacity; //résistance du neurone
+	const long potential_seuil = 20.0; //seuil en dessous duquel pas de spike
+	const double capacity = 1.0; //capacité du neurone
+	const double time_refractaire = 2.0; //temps de réfractation entre deux spikes
+	const double t_delay = 1.5; //time to delay
+	const double cte1 = exp(-dt / tau);
+	
+	unsigned int spike; /*! Number of spikes */
+	double potential; /*! Membrane Potential */
+	double n_J = 0.0; /*! Number of J not use now */
+	double time_; /*! Time from the start of the experience */ 
+	int step = 0; /*! Number of steps */ 
+	std::vector<double> Ring_Buffer_; /*! Ring buffer to delay the moment */
 	long step_refractory = 0;
 	double Iext = 0.0;
-	const double cte1 = exp(-dt / tau);
-	double J;
-	
+	double J; /*! Depend if the neuron is excitatory or inhibitory */
+	std::vector<double> time_spike; /*! Vector where all the spikes are noted */
 	
 	public:
-	std::vector<double> time_spike; //tableau qui note le temps où à lieu le spike
 	
-	Neuron(double j); //constructeur 
+	/*! Constructor */
+	Neuron(double j); 
 	
-	~Neuron(); //Destructeur 
+	/*! Destructor */
+	~Neuron();
 	
-	Neuron(Neuron const& other); //constructreur de copie
+	/*! Copy constructor */
+	Neuron(Neuron const& other); 
 	
-	bool update(long step_clock_); //calcule le potentiel au temps t+dt
+	/*! Calcul the membrane potential at time t + dt */
+	bool update(long step_clock_);
+	
+	/*! Sum J (not use now) */
+	void sumInput(double J);
+	
+	/** Modify Ring Buffer
+	 * @param : i = numero of the case in the tab
+	 * */
+	void setRingBuffer(size_t i); //Modifie la ring buffer
+	
+	/*! Resize the ring buffer*/
+	void resizeRingBuffer(int i);
+	
+	//Donne un nombre aléatoire selon loi de poisson
+	double Random_Poisson(int n);
+	
+	/*! Getteur : */
+	std::vector<double> getRingBuffer();
 	
 	double getMembranePotential() const; //Renvoie la valeur du potentiel membranaire
 	
@@ -57,30 +80,20 @@ class Neuron
 	
 	void getTime_(double t); //Renvoie le temps du neurone
 	
-	void sumInput(double J); //Additionne les J à un temps dt
-	
 	double getDelay(); //Renvoie le delai entre deux dt
-	
-	std::vector<double> getRingBuffer(); //tableau des pas de temps avec delai
-	
-	void setRingBuffer(size_t i); //Modifie la ring buffer
-	
-	void resizeRingBuffer(int i);
-	
+
 	int getStep();
-	
-	void set_i_ext(double I);
-	
-	double Jext = 0.1;
-	
-	//Donne un nombre aléatoire selon loi de poisson
-	double Random_Poisson(int n);
 	
 	long getStepRefractory();
 	
+	std::vector<double> getTimeSpikeVector();
+	
+	/*! Setteur : */
+	void set_i_ext(double I);
+	
 	void setPotentialPoisson(int n);
 	
-	std::vector<double> getTimeSpikeVector();
+	
 };
 
 #endif

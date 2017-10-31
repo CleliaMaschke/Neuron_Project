@@ -7,7 +7,8 @@ void Experiment::run_programme(double g, double eta, long start, long stop, doub
 	g_ = g;
 	n_ = eta;
 	
-	double Jin = g_ * 0.1; /*! Initialise J inhibitor */
+	double Jin = (-g_ * 0.1); /*! Initialise J inhibitor */
+	
 	Cortex c;
 	
 	c.setClock(start);
