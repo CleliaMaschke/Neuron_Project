@@ -1,5 +1,6 @@
 #include "Neuron.hpp"
 #include "Cortex.hpp"
+#include "Experiment.hpp"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -20,35 +21,27 @@ int main ()
 	long step_start = time_start / dt;
 	long step_end = time_stop / dt;
 	
-	Cortex c;
-
-	c.setClock(time_start);
-	//std::cout << "SetClock()" << std::endl;
+	/**
+	 * We will draw the 4 plots 
+	 * */
 	
-	c.setStepClock(step_start);
+	Experiment E_;
 	
-	c.setStepEnd(step_end);
+	std::ofstream fichierx("Param1.csv");
+	E_.run_programme(3.0, 2.0, 5000, 6000, Iext, fichierx);
+	fichierx.close();
 	
-	c.initialise_neuron(step_start, Iext);
-	std::cout << "Initialise neurones" << std::endl;
+	std::ofstream fichiery("Param2.csv");
+	E_.run_programme(6.0, 4.0, 10000, 12000, Iext, fichiery);
+	fichiery.close();
 	
-	c.Initialise_Connexions();
-	std::cout << "Initialise Connexions" << std::endl;
+	std::ofstream fichierz("Param3.csv");
+	E_.run_programme(5.0, 2.0, 10000, 12000, Iext, fichierz);
+	fichierz.close();
 	
-	c.update_neuron(step_start, step_end);
-	std::cout << "Update neuron" << std::endl;
-	
-	c.time_spike();	
-	
-	c.Save_to_file();
-	std::cout << "Time spike" << std::endl;
-	
-	c.Document_Python();
-	std::cout << "Document python" << std::endl;
-	
-	c.Reset();
-	std::cout << "Reset()" << std::endl;
-
+	std::ofstream fichierw("Param4.csv");
+	E_.run_programme(4.5, 0.9, 10000, 12000, Iext, fichierw);
+	fichierw.close();
 	
 	return 0;
 }

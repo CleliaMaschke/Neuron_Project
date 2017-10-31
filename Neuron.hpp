@@ -74,11 +74,11 @@ class Neuron
 	double Jext = 0.1;
 	
 	//Donne un nombre aléatoire selon loi de poisson
-	double Random_Poisson();
+	double Random_Poisson(int n);
 	
 	long getStepRefractory();
 	
-	void setPotentialPoisson();
+	void setPotentialPoisson(int n);
 	
 	std::vector<double> getTimeSpikeVector();
 };

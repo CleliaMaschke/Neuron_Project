@@ -9,7 +9,7 @@ Cortex::~Cortex() {}
 Cortex::Cortex(Cortex const& other)
 : neurons(other.neurons) {};
 
-void Cortex::initialise_neuron(long start, double Iext)
+void Cortex::initialise_neuron(long start, double Iext, double Ji)
 {
 	/*for(unsigned int i(0); i < Number_Neurons_; ++i) 
 	{
@@ -29,7 +29,7 @@ void Cortex::initialise_neuron(long start, double Iext)
 
 	for(size_t i(Number_Neurons_Excitator); i < Number_Neurons_; ++i)
 	{
-		neurons.push_back(new Neuron(0.5));
+		neurons.push_back(new Neuron(Ji));
 		neurons[i]->getTime_(start * dt);
 		neurons[i]->resizeRingBuffer(neurons[i]->getDelay() / dt + 1);
 	}
@@ -40,7 +40,7 @@ void Cortex::initialise_neuron(long start, double Iext)
 
 
 
-void Cortex::update_neuron(long Step_start, long Step_end) 
+void Cortex::update_neuron(long Step_start, long Step_end, int ratio) 
 {	/*std::cout << "hello" << std::endl;
 	std::cout << "step start : " << Step_start << std::endl;
 	std::cout << "Step_Clock_ : " << Step_Clock_ << std::endl;
@@ -53,7 +53,7 @@ void Cortex::update_neuron(long Step_start, long Step_end)
 				//std::cout << "Dans la boucle update_neuron" << std::endl;
 				bool spikeneuro(neurons[i]->update(Step_Clock_));
 				if(neurons[i]->getStepRefractory() <= 0) {
-					neurons[i]->setPotentialPoisson();
+					neurons[i]->setPotentialPoisson(ratio);
 				}
 				if(spikeneuro and (! connexions.empty())) {
 					//std::cout << "if dans update_neuron" << std::endl;
@@ -143,9 +143,9 @@ int Cortex::Random_Uniform(unsigned int start, unsigned int stop)
 
 void Cortex::Initialise_Connexions()
 {
-	for(int i(0); i < Number_Neurons_; ++i) {
+	for(unsigned int i(0); i < Number_Neurons_; ++i) {
 		connexions.push_back({});
-		for(int j(0); j < Number_Connexion_excitator; ++j) {
+		for(unsigned int j(0); j < Number_Connexion_excitator; ++j) {
 			int ran = Random_Uniform(0, Number_Neurons_Excitator);
 			connexions[i].push_back(ran);
 		}
@@ -176,16 +176,15 @@ void Cortex::Initialise_Connexions()
 	}*/
 }
 
-void Cortex::Document_Python() 
-{	
-	std::ofstream Time("Doc_python.csv");
-	if(!Time.fail()) {
+void Cortex::Document_Python(std::ofstream &doc) 
+{
+	if(!doc.fail()) {
 		for(size_t i(0); i < neurons.size(); ++i) {
 			std::vector<double> tab = neurons[i]->getTimeSpikeVector();
 			for(size_t j(0); j < tab.size(); ++j) {
-				Time << tab[j] << "\t" << i << "\n";
+				doc << tab[j] << "\t" << i << "\n";
 			}
 		}
 	}
-	Time.close();
+	//doc.close();
 }

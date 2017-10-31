@@ -11,11 +11,13 @@ add_executable(neuron
 			   Neuron.cpp 
 			   main.cpp
 		       Cortex.cpp
+		       Experiment.cpp
 			   )
 add_executable(neuron_test 
 			   Neuron_Test.cpp 
 			   Neuron.cpp
 			   Cortex.cpp
+			   Experiment.cpp
 			   )
 				
 target_link_libraries(neuron_test

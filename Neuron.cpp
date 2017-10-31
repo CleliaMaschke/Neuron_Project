@@ -99,13 +99,13 @@ void Neuron::set_i_ext(double I)
 	Iext = I;
 }
 
-double Neuron::Random_Poisson()
+double Neuron::Random_Poisson(int n)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	
 	// if an event occurs 0.02 spikes/connection x ms
-	std::poisson_distribution<> d(2);
+	std::poisson_distribution<> d(n);
 	
 	//std::cout << "Poisson : " << d(gen) << std::endl;
 	
@@ -117,9 +117,9 @@ long Neuron::getStepRefractory()
 	return step_refractory;
 }
 
-void Neuron::setPotentialPoisson()
+void Neuron::setPotentialPoisson(int n)
 {
-	potential += Random_Poisson() * Jext;
+	potential += Random_Poisson(n) * Jext;
 }
 
 std::vector<double> Neuron::getTimeSpikeVector()

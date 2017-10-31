@@ -70,10 +70,10 @@ class Cortex
 	Cortex(Cortex const& other); 
 	
 	//Initialie l'ensemble des vecteurs
-	void initialise_neuron(long start, double Iext);
+	void initialise_neuron(long start, double Iext, double Ji);
 	
 	//Update the neuron state / potential in time dt
-	void update_neuron(long Step_start, long Step_end);
+	void update_neuron(long Step_start, long Step_end, int ratio);
 	
 	//write potential, time in a file
 	void Save_to_file();
@@ -102,7 +102,11 @@ class Cortex
 	//Initialise connexions entre les neurones
 	void Initialise_Connexions();
 	
-	void Document_Python();
+	/**
+	 * Write a document to draw the plot
+	 * @param : name of a document to have 4 ones
+	 */
+	void Document_Python(std::ofstream &doc);
 	
 };
 

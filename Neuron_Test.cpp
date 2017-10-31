@@ -30,12 +30,12 @@ TEST(neuron_test, time_spikes)
 	//time start = 100ms and Iext = 1.01
 	cortex.setStepClock(1000);
 	cortex.setStepEnd(4000);
-	cortex.initialise_neuron(0, 1.01);
+	cortex.initialise_neuron(0, 1.01, 0.5);
 	cortex.setNeuronInput(0, 1.01);
 	cortex.setNeuronInput(1, 0.0);
 	
 	for(long i(1000); i <= 4000; ++i) {
-		cortex.update_neuron(1000, 4000);
+		cortex.update_neuron(1000, 4000, 2);
 	}
 	
 	EXPECT_EQ(cortex.neurons[0]->time_spike.size(), 3);
