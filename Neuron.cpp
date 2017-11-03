@@ -17,24 +17,27 @@ Neuron::Neuron(Neuron const& other)
 bool Neuron::update(long step_clock_)
 {
 	--step_refractory;
+	std::cout << "Step refractaire -- = " << step_refractory << std::endl;
 	
 	//std::cout << "Dans Neuron::update " << std::endl;
-	
-	if(potential > potential_seuil) {
-		time_spike.push_back(step_clock_ * dt); //ajoute au tableau le moment où le spike à lieu
-		potential = 0.0;
-		step_refractory = time_refractaire /dt; //ajoute 2 step car 1 step = 0.1 et le temps réfracatire = 0.2
-		++spike;
-		return true;
-	}
-	
 	if(step_refractory > 0) {
 		potential = 0.0;
+		return false;
 	} else {
-		//double pois = Random_Poisson();
-		potential = (cte1 * potential + resistance * Iext * (1 - cte1) + Ring_Buffer_[step % Ring_Buffer_.size() +1] ); //+ pois * Jext
-		Ring_Buffer_[step % Ring_Buffer_.size() +1] = 0.0;
-		//std::cout << "Poisson = " << pois << std::endl;
+		if(potential >= potential_seuil) {
+			time_spike.push_back(step_clock_ * dt); //ajoute au tableau le moment où le spike à lieu
+			potential = 0.0;
+			step_refractory = time_refractaire /dt; //ajoute 2 step car 1 step = 0.1 et le temps réfracatire = 0.2
+			//std::cout << "Step refractaire dans else = " << step_refractory << std::endl;
+			++spike;
+			return true;
+		} else {
+			//double pois = Random_Poisson();
+			potential = (cte1 * potential + resistance * Iext * (1 - cte1) + Ring_Buffer_[step % Ring_Buffer_.size()]); //+ pois * Jext
+			Ring_Buffer_[step % Ring_Buffer_.size()] = 0.0;
+			std::cout << "Potential = " << potential << std::endl;
+			//std::cout << "Poisson = " << pois << std::endl;
+		}
 	}
 	
 	++step;
@@ -82,6 +85,7 @@ void Neuron::setRingBuffer(size_t i)
 {
 	
 	Ring_Buffer_[i] += J;
+	//std::cout << "J = " << J << std::endl;
 }
 
 void Neuron::resizeRingBuffer(int i)

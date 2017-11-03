@@ -47,22 +47,40 @@ TEST(twoNeuron, Connexion_with_oneSpike)
 	
 	//First neuron recieve an Input externe
 	n1.set_i_ext(1.01);
+	long D = n1.getDelay() / 0.1;
 	
 	//Resize the buffer
 	n1.resizeRingBuffer(n1.getDelay() / 0.1 + 1);
 	n2.resizeRingBuffer(n2.getDelay() / 0.1 + 1);
+	std::cout << "Size of ring buffer : " << n2.getRingBuffer().size() << std::endl;
 	
 	//First spike at 924 steps + 15 steps of delay
-	for(long i(0); i < 950; ++i) {
+	for(long i(0); i < 940; ++i) {
 		if(n1.update(i)) { //update neuron 1 and test if he spikes 
 			size_t m = n2.getRingBuffer().size();
-			n2.setRingBuffer((i + m-1) % m); //neuron 2 stores J in his buffer
+			n2.setRingBuffer((i + D) % m); //neuron 2 stores J in his buffer
+			std::cout << "Ring buffer [1] : " << n2.getRingBuffer()[0] << std::endl;
+			std::cout << "Ring buffer [2] : " << n2.getRingBuffer()[1] << std::endl;
+			std::cout << "Ring buffer [3] : " << n2.getRingBuffer()[2] << std::endl;
+			std::cout << "Ring buffer [4] : " << n2.getRingBuffer()[3] << std::endl;
+			std::cout << "Ring buffer [5] : " << n2.getRingBuffer()[4] << std::endl;
+			std::cout << "Ring buffer [6] : " << n2.getRingBuffer()[5] << std::endl;
+			std::cout << "Ring buffer [7] : " << n2.getRingBuffer()[6] << std::endl;
+			std::cout << "Ring buffer [8] : " << n2.getRingBuffer()[7] << std::endl;
+			std::cout << "Ring buffer [9] : " << n2.getRingBuffer()[8] << std::endl;
+			std::cout << "Ring buffer [10] : " << n2.getRingBuffer()[9] << std::endl;
+			std::cout << "Ring buffer [11] : " << n2.getRingBuffer()[10] << std::endl;
+			std::cout << "Ring buffer [12] : " << n2.getRingBuffer()[11] << std::endl;
+			std::cout << "Ring buffer [13] : " << n2.getRingBuffer()[12] << std::endl;
+			std::cout << "Ring buffer [14] : " << n2.getRingBuffer()[13] << std::endl;
+			std::cout << "Ring buffer [15] : " << n2.getRingBuffer()[14] << std::endl;
+			std::cout << "Ring buffer [16] : " << n2.getRingBuffer()[15] << std::endl;
 			EXPECT_EQ(n1.getMembranePotential(), 0.0); //Neuron 1 has a spike so he has a membrane potential = 0.0
 		}
 		n2.update(i);
 	}
-	
-	EXPECT_EQ(n2.getMembranePotential(), 0.1); //neuron 2 hase a +J because neuron 1 has spiked
+	std::cout << "Membrane potential of neuron 2 : " << n2.getMembranePotential() << std::endl;
+	EXPECT_FLOAT_EQ(n2.getMembranePotential(), 0.1); //neuron 2 hase a +J because neuron 1 has spiked
 }
 
 TEST(twoNeurons, Connexion_with_twoSpikes)
@@ -73,14 +91,16 @@ TEST(twoNeurons, Connexion_with_twoSpikes)
 	n2.set_i_ext(1.0);
 	n1.resizeRingBuffer(n1.getDelay() / 0.1 + 1);
 	n2.resizeRingBuffer(n2.getDelay() / 0.1 + 1);
-	
+	long D = n1.getDelay() / 0.1;
+	std::cout << "Neurone 1" << std::endl;
 	//Neuron 2 1st spike should occur right after neuron 1 2nd spike
 	for (long i(0); i < 1884; ++i) { //number of steps for neuron 1 to spike twice (1868 steps) + delay (15 steps)
 		if (n1.update(i)) { //update neuron 1
 			size_t m = n2.getRingBuffer().size();
-			n2.setRingBuffer((i + m-1) % m); //neuron 2 stores J in his buffer
+			n2.setRingBuffer((i + D) % m); //neuron 2 stores J in his buffer
 			EXPECT_EQ(n1.getMembranePotential(), 0.0);
 		}
+		std::cout << "Neurone 2" << std::endl;
 		n2.update(i);
 	}
 	

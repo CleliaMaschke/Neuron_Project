@@ -34,7 +34,7 @@ class Neuron
 	double potential; /*! Membrane Potential */
 	double n_J = 0.0; /*! Number of J not use now */
 	double time_; /*! Time from the start of the experience */ 
-	int step = 0; /*! Number of steps */ 
+	long step = 0; /*! Number of steps */ 
 	std::vector<double> Ring_Buffer_; /*! Ring buffer to delay the moment */
 	long step_refractory = 0;
 	double Iext = 0.0;
@@ -61,12 +61,12 @@ class Neuron
 	/** Modify Ring Buffer
 	 * @param : i = numero of the case in the tab
 	 * */
-	void setRingBuffer(size_t i); //Modifie la ring buffer
+	void setRingBuffer(size_t i);
 	
 	/*! Resize the ring buffer*/
 	void resizeRingBuffer(int i);
 	
-	//Donne un nombre aléatoire selon loi de poisson
+	/*!give a number random */
 	double Random_Poisson(int n);
 	
 	/*! Getteur : */

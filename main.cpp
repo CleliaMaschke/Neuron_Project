@@ -27,21 +27,21 @@ int main ()
 	
 	Experiment E_;
 	
-	std::ofstream fichierx("Param1.csv");
+	/*std::ofstream fichierx("Param1.csv");
 	E_.run_programme(3.0, 2.0, 5000, 6000, Iext, fichierx);
 	fichierx.close();
 	
 	std::ofstream fichiery("Param2.csv");
 	E_.run_programme(6.0, 4.0, 10000, 12000, Iext, fichiery);
-	fichiery.close();
+	fichiery.close();*/
 	
 	std::ofstream fichierz("Param3.csv");
 	E_.run_programme(5.0, 2.0, 10000, 12000, Iext, fichierz);
 	fichierz.close();
 	
-	std::ofstream fichierw("Param4.csv");
+	/*std::ofstream fichierw("Param4.csv");
 	E_.run_programme(4.5, 0.9, 10000, 12000, Iext, fichierw);
-	fichierw.close();
+	fichierw.close();*/
 	
 	return 0;
 }
