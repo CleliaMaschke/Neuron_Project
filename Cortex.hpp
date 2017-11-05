@@ -64,7 +64,7 @@ class Cortex
 	/** Update all neurons
 	 * 	@param : ratio = Vthr/Vext = eta
 	 * */
-	void update_neuron(long Step_start, long Step_end, int ratio);
+	void update_neuron(long Step_start, long Step_end, double ratio);
 	
 	/*! Write a file with all the membrane potential and the time*/
 	void Save_to_file();

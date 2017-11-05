@@ -54,12 +54,18 @@ TEST(twoNeuron, Connexion_with_oneSpike)
 	n2.resizeRingBuffer(n2.getDelay() / 0.1 + 1);
 	std::cout << "Size of ring buffer : " << n2.getRingBuffer().size() << std::endl;
 	
+	std::ofstream fichier("Neuron_test.txt");
+	
+	
+	size_t m = n2.getRingBuffer().size();
 	//First spike at 924 steps + 15 steps of delay
+	
+	if(!fichier.fail()) {
 	for(long i(0); i < 940; ++i) {
 		if(n1.update(i)) { //update neuron 1 and test if he spikes 
-			size_t m = n2.getRingBuffer().size();
+			
 			n2.setRingBuffer((i + D) % m); //neuron 2 stores J in his buffer
-			std::cout << "Ring buffer [1] : " << n2.getRingBuffer()[0] << std::endl;
+			/*std::cout << "Ring buffer [1] : " << n2.getRingBuffer()[0] << std::endl;
 			std::cout << "Ring buffer [2] : " << n2.getRingBuffer()[1] << std::endl;
 			std::cout << "Ring buffer [3] : " << n2.getRingBuffer()[2] << std::endl;
 			std::cout << "Ring buffer [4] : " << n2.getRingBuffer()[3] << std::endl;
@@ -74,12 +80,19 @@ TEST(twoNeuron, Connexion_with_oneSpike)
 			std::cout << "Ring buffer [13] : " << n2.getRingBuffer()[12] << std::endl;
 			std::cout << "Ring buffer [14] : " << n2.getRingBuffer()[13] << std::endl;
 			std::cout << "Ring buffer [15] : " << n2.getRingBuffer()[14] << std::endl;
-			std::cout << "Ring buffer [16] : " << n2.getRingBuffer()[15] << std::endl;
+			std::cout << "Ring buffer [16] : " << n2.getRingBuffer()[15] << std::endl;*/
 			EXPECT_EQ(n1.getMembranePotential(), 0.0); //Neuron 1 has a spike so he has a membrane potential = 0.0
 		}
+		
+		fichier << "membrane potential n1 = " << n1.getMembranePotential() << std::endl;
 		n2.update(i);
+		fichier << "membrane potential n2 = " << n2.getMembranePotential() << std::endl;
 	}
-	std::cout << "Membrane potential of neuron 2 : " << n2.getMembranePotential() << std::endl;
+	} else {
+			std::cout << "Problem with Neuron.txt, save impossible" << std::endl;
+		}
+	
+	fichier.close();  
 	EXPECT_FLOAT_EQ(n2.getMembranePotential(), 0.1); //neuron 2 hase a +J because neuron 1 has spiked
 }
 
@@ -89,10 +102,14 @@ TEST(twoNeurons, Connexion_with_twoSpikes)
 	Neuron n2(0.1);
 	n1.set_i_ext(1.01);
 	n2.set_i_ext(1.0);
+	
+	
 	n1.resizeRingBuffer(n1.getDelay() / 0.1 + 1);
 	n2.resizeRingBuffer(n2.getDelay() / 0.1 + 1);
 	long D = n1.getDelay() / 0.1;
 	std::cout << "Neurone 1" << std::endl;
+	std::ofstream fichierx("Neuron_test_2.txt");
+	if(!fichierx.fail()) {
 	//Neuron 2 1st spike should occur right after neuron 1 2nd spike
 	for (long i(0); i < 1884; ++i) { //number of steps for neuron 1 to spike twice (1868 steps) + delay (15 steps)
 		if (n1.update(i)) { //update neuron 1
@@ -100,9 +117,15 @@ TEST(twoNeurons, Connexion_with_twoSpikes)
 			n2.setRingBuffer((i + D) % m); //neuron 2 stores J in his buffer
 			EXPECT_EQ(n1.getMembranePotential(), 0.0);
 		}
-		std::cout << "Neurone 2" << std::endl;
+		fichierx << "Potential Neurone 1 = " << n1.getMembranePotential() << std::endl;
 		n2.update(i);
+		fichierx << "Potential Neurone 2 = " << n2.getMembranePotential() << std::endl;
 	}
+	} else {
+			std::cout << "Problem with Neuron.txt, save impossible" << std::endl;
+		}
+	
+	fichierx.close();
 	
 	//neuron 2 has no spike yet
 	EXPECT_EQ(n2.getTimeSpikeVector().size(), 0);

@@ -68,7 +68,7 @@ class Neuron
 	void resizeRingBuffer(int i);
 	
 	/*!give a number random */
-	double Random_Poisson(int n);
+	double Random_Poisson(double n);
 	
 	/*! Getteur : */
 	std::vector<double> getRingBuffer();
