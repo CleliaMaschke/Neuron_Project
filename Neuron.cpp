@@ -17,7 +17,7 @@ Neuron::Neuron(Neuron const& other)
 bool Neuron::update(long step_clock_)
 {
 	--step_refractory;
-	std::cout << "Step refractaire -- = " << step_refractory << std::endl;
+	//std::cout << "Step refractaire -- = " << step_refractory << std::endl;
 	
 	//std::cout << "Dans Neuron::update " << std::endl;
 	if(step_refractory > 0) {
@@ -33,13 +33,13 @@ bool Neuron::update(long step_clock_)
 			return true;
 		} else {
 			//double pois = Random_Poisson();
-			potential = (cte1 * potential + resistance * Iext * (1 - cte1) + Ring_Buffer_[step % Ring_Buffer_.size()]); //+ pois * Jext
-			Ring_Buffer_[step % Ring_Buffer_.size()] = 0.0;
-			std::cout << "Potential = " << potential << std::endl;
+			potential = (cte1 * potential + Iext * cte2 + Ring_Buffer_[step % Ring_Buffer_.size()]); //+ pois * Jext
+			
+			//std::cout << "Potential = " << potential << std::endl;
 			//std::cout << "Poisson = " << pois << std::endl;
 		}
 	}
-	
+	Ring_Buffer_[step % Ring_Buffer_.size()] = 0.0;
 	++step;
 	return false;
 }
@@ -123,7 +123,7 @@ long Neuron::getStepRefractory()
 
 void Neuron::setPotentialPoisson(int n)
 {
-	potential += Random_Poisson(n) * Jext;
+	potential += Random_Poisson(n) * 0.1;
 }
 
 std::vector<double> Neuron::getTimeSpikeVector()

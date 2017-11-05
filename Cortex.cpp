@@ -39,13 +39,16 @@ void Cortex::update_neuron(long Step_start, long Step_end, int ratio)
 	std::cout << "Step_end : " << Step_End << std::endl;*/
 	if((Step_Clock_ >= Step_start) and (Step_Clock_ < Step_end)) {
 		//std::cout << "If update_neuron" << std::endl;
-		
+	
+		size_t m = neurons[0]->getRingBuffer().size(); // all neurons have the same ring buffer size
+		long D = neurons[0]->getDelay() / 0.1; //all neurons have the same delay 
+	
 		while(Step_Clock_ < Step_End) {
 			for(size_t i(0); i < neurons.size(); ++i) {
 				//std::cout << "Time stop" << std::endl;
 				//std::cout << "Dans la boucle update_neuron" << std::endl;
-				long D = neurons[i]->getDelay() / 0.1;
-				std::cout << "neuron i dans Cortex " << i << std::endl;
+				
+				//std::cout << "neuron i dans Cortex " << i << std::endl;
 				bool spikeneuro(neurons[i]->update(Step_Clock_));
 				if(neurons[i]->getStepRefractory() < 0) {
 					neurons[i]->setPotentialPoisson(ratio);
@@ -55,10 +58,11 @@ void Cortex::update_neuron(long Step_start, long Step_end, int ratio)
 					//neurons[i+1]->sumInput(J);
 					for(size_t j(0); j < Number_Connexion_; ++j) 
 					{
-						size_t m = neurons[connexions[i][j]]->getRingBuffer().size();
+						
 						//std::cout << "taille de Ring_Buffer_ : " << m << std::endl;
 						//int num = neurons[i+1]->getStep();
-						const auto t_out = ((Step_Clock_ + D) % m);
+						//const auto t_out = ((Step_Clock_ + D) % m);
+						const auto t_out = ((Step_start + m-1) % m);
 						assert(t_out < m);
 						neurons[j]->setRingBuffer(t_out);
 						//neurons[connexions[i][j]]->setRingBuffer(t_out);

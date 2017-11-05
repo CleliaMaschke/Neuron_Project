@@ -29,6 +29,7 @@ class Neuron
 	const double time_refractaire = 2.0; //temps de réfractation entre deux spikes
 	const double t_delay = 1.5; //time to delay
 	const double cte1 = exp(-dt / tau);
+	const double cte2 = resistance * (1-cte1);
 	
 	unsigned int spike; /*! Number of spikes */
 	double potential; /*! Membrane Potential */
