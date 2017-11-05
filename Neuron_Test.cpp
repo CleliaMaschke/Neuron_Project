@@ -11,12 +11,12 @@ TEST(oneNeuron, calculate_potential) {
 	neuron.resizeRingBuffer(1);
 	
 	//First update test with dt = 0.1 and step start = 1000 
-	neuron.update(1000);
+	neuron.update(1000, 0);
 	EXPECT_EQ(((20.0*(1.0 - exp(-0.1/20.0))) - neuron.getMembranePotential()), 0);
 	
 	//Test for 3000 update
 	for(long i(0); i < 3000; ++i) {
-		neuron.update(1000);
+		neuron.update(1000, 0);
 	}
 	
 	//Iext = 1.0 -> no spike but membrane potential near 20
@@ -29,7 +29,7 @@ TEST(oneNeuron, time_spikes)
 	neuron_.set_i_ext(1.01);
 	neuron_.resizeRingBuffer(1);
 	for(long i(1000); i <= 4000; ++i) {
-		neuron_.update(i);
+		neuron_.update(i, 0);
 	}
 	
 	EXPECT_EQ(neuron_.getTimeSpikeVector().size(), 3);
@@ -62,7 +62,7 @@ TEST(twoNeuron, Connexion_with_oneSpike)
 	
 	if(!fichier.fail()) {
 	for(long i(0); i < 940; ++i) {
-		if(n1.update(i)) { //update neuron 1 and test if he spikes 
+		if(n1.update(i, 0)) { //update neuron 1 and test if he spikes 
 			
 			n2.setRingBuffer((i + D) % m); //neuron 2 stores J in his buffer
 			/*std::cout << "Ring buffer [1] : " << n2.getRingBuffer()[0] << std::endl;
@@ -85,7 +85,7 @@ TEST(twoNeuron, Connexion_with_oneSpike)
 		}
 		
 		fichier << "membrane potential n1 = " << n1.getMembranePotential() << std::endl;
-		n2.update(i);
+		n2.update(i, 0);
 		fichier << "membrane potential n2 = " << n2.getMembranePotential() << std::endl;
 	}
 	} else {
@@ -112,13 +112,13 @@ TEST(twoNeurons, Connexion_with_twoSpikes)
 	if(!fichierx.fail()) {
 	//Neuron 2 1st spike should occur right after neuron 1 2nd spike
 	for (long i(0); i < 1884; ++i) { //number of steps for neuron 1 to spike twice (1868 steps) + delay (15 steps)
-		if (n1.update(i)) { //update neuron 1
+		if (n1.update(i, 0)) { //update neuron 1
 			size_t m = n2.getRingBuffer().size();
 			n2.setRingBuffer((i + D) % m); //neuron 2 stores J in his buffer
 			EXPECT_EQ(n1.getMembranePotential(), 0.0);
 		}
 		fichierx << "Potential Neurone 1 = " << n1.getMembranePotential() << std::endl;
-		n2.update(i);
+		n2.update(i, 0);
 		fichierx << "Potential Neurone 2 = " << n2.getMembranePotential() << std::endl;
 	}
 	} else {
@@ -129,7 +129,7 @@ TEST(twoNeurons, Connexion_with_twoSpikes)
 	
 	//neuron 2 has no spike yet
 	EXPECT_EQ(n2.getTimeSpikeVector().size(), 0);
-	n2.update(1884);
+	n2.update(1884, 0);
 	//neuron 2 spike
 	EXPECT_EQ(n2.getMembranePotential(), 0.0);
 	EXPECT_EQ(n2.getTimeSpikeVector().size(), 1);

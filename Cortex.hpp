@@ -72,6 +72,9 @@ class Cortex
 	/*! Write the time when spike occures in the terminal */
 	void time_spike();
 	
+	/*!give a number random */
+	double Random_Poisson(double n);
+	
 	/*! Initialise the clock */
 	void setClock(double clock);
 	

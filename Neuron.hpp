@@ -54,7 +54,7 @@ class Neuron
 	Neuron(Neuron const& other); 
 	
 	/*! Calcul the membrane potential at time t + dt */
-	bool update(long step_clock_);
+	bool update(long step_clock_, double pois);
 	
 	/*! Sum J (not use now) */
 	void sumInput(double J);
@@ -66,9 +66,6 @@ class Neuron
 	
 	/*! Resize the ring buffer*/
 	void resizeRingBuffer(int i);
-	
-	/*!give a number random */
-	double Random_Poisson(double n);
 	
 	/*! Getteur : */
 	std::vector<double> getRingBuffer();

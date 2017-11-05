@@ -41,12 +41,8 @@ void Cortex::update_neuron(long Step_start, long Step_end, double ratio)
 	
 		while(Step_Clock_ < Step_End) {
 			for(size_t i(0); i < neurons.size(); ++i) {
-				
-				bool spikeneuro(neurons[i]->update(Step_Clock_));
-				if(neurons[i]->getStepRefractory() < 0) {
-					neurons[i]->setPotentialPoisson(ratio);
-				}
-				if(spikeneuro and (! connexions.empty())) {
+				double poisson = Random_Poisson(ratio);
+				if(neurons[i]->update(Step_Clock_, poisson) and (! connexions.empty())) {
 				
 					for(size_t j(0); j < Number_Connexion_; ++j) 
 					{
@@ -152,4 +148,17 @@ void Cortex::Document_Python(std::ofstream &doc)
 			}
 		}
 	}
+}
+
+double Cortex::Random_Poisson(double n)
+{
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+	
+	// if an event occurs 0.02 spikes/connection x ms
+	static std::poisson_distribution<> d(n);
+	
+	//std::cout << "Poisson : " << d(gen) << std::endl;
+	
+	return d(gen);
 }
