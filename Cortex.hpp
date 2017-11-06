@@ -30,7 +30,7 @@ class Cortex
 	
 	const unsigned int Number_Connexion_ = 1250;
 	
-	std::vector<std::vector<int>> connexions;  /*! vector<vector>> that represent the connexion between the neurons*/
+	//std::vector<std::vector<int>> connexions;  /*! vector<vector>> that represent the connexion between the neurons*/
 	
 	double Clock_ = 0.0; /*! Time of the programm */
 	

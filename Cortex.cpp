@@ -40,11 +40,11 @@ void Cortex::update_neuron(long Step_start, long Step_end, double ratio)
 		long D = neurons[0]->getDelay() / 0.1; //all neurons have the same delay 
 	
 		while(Step_Clock_ < Step_End) {
-			const auto t_out = ((Step_start + m-1) % m);
+			const auto t_out = (Step_start % m);
 			assert(t_out < m);
 			for(size_t i(0); i < neurons.size(); ++i) {
 				double poisson = Random_Poisson(ratio);
-				std::cout << "Poisson = " << poisson << std::endl;
+				//std::cout << "Poisson = " << poisson << std::endl;
 				if(neurons[i]->update(Step_Clock_, poisson)) {
 				
 					for(auto element : neurons[i]->getOutgoing()) 
@@ -148,7 +148,7 @@ void Cortex::Initialise_Connexions()
 		
 		for (unsigned int k(0); k < Number_Connexion_inhibitor; ++k)
 			{
-				neurons[Random_Uniform(0, Number_Neurons_Inhibitor)]-> setOutgoing(i);
+				neurons[Random_Uniform(Number_Neurons_Excitator, Number_Neurons_)]-> setOutgoing(i);
 			}
 	}
 }
