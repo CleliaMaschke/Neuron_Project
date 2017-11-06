@@ -35,13 +35,13 @@ int main ()
 	E_.run_programme(6.0, 4.0, 10000, 12000, Iext, fichiery);
 	fichiery.close();*/
 	
-	std::ofstream fichierz("Param3.csv");
+	/*std::ofstream fichierz("Param3.csv");
 	E_.run_programme(5.0, 2.0, 10000, 12000, Iext, fichierz);
-	fichierz.close();
+	fichierz.close();*/
 	
-	/*std::ofstream fichierw("Param4.csv");
+	std::ofstream fichierw("Param4.csv");
 	E_.run_programme(4.5, 0.9, 10000, 12000, Iext, fichierw);
-	fichierw.close();*/
+	fichierw.close();
 	
 	return 0;
 }

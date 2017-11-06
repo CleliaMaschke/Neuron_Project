@@ -64,7 +64,7 @@ TEST(twoNeuron, Connexion_with_oneSpike)
 	for(long i(0); i < 940; ++i) {
 		if(n1.update(i, 0)) { //update neuron 1 and test if he spikes 
 			
-			n2.setRingBuffer((i + D) % m); //neuron 2 stores J in his buffer
+			n2.setRingBuffer((i + D) % m, n1.getJ()); //neuron 2 stores J in his buffer
 			/*std::cout << "Ring buffer [1] : " << n2.getRingBuffer()[0] << std::endl;
 			std::cout << "Ring buffer [2] : " << n2.getRingBuffer()[1] << std::endl;
 			std::cout << "Ring buffer [3] : " << n2.getRingBuffer()[2] << std::endl;
@@ -114,7 +114,7 @@ TEST(twoNeurons, Connexion_with_twoSpikes)
 	for (long i(0); i < 1884; ++i) { //number of steps for neuron 1 to spike twice (1868 steps) + delay (15 steps)
 		if (n1.update(i, 0)) { //update neuron 1
 			size_t m = n2.getRingBuffer().size();
-			n2.setRingBuffer((i + D) % m); //neuron 2 stores J in his buffer
+			n2.setRingBuffer((i + D) % m, n1.getJ()); //neuron 2 stores J in his buffer
 			EXPECT_EQ(n1.getMembranePotential(), 0.0);
 		}
 		fichierx << "Potential Neurone 1 = " << n1.getMembranePotential() << std::endl;

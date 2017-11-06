@@ -81,10 +81,10 @@ std::vector<double> Neuron::getRingBuffer()
 	return Ring_Buffer_;
 }
 
-void Neuron::setRingBuffer(size_t i)
+void Neuron::setRingBuffer(size_t i, double j)
 {
 	
-	Ring_Buffer_[i] += J;
+	Ring_Buffer_[i] += j;
 	//std::cout << "J = " << J << std::endl;
 }
 
@@ -113,3 +113,17 @@ std::vector<double> Neuron::getTimeSpikeVector()
 	return time_spike;
 }
 
+void Neuron::setOutgoing(int neu)
+{
+	outgoing_.push_back(neu);
+}
+
+std::vector<int> Neuron::getOutgoing()
+{
+	return outgoing_;
+}
+
+double Neuron::getJ()
+{
+	return J;
+}

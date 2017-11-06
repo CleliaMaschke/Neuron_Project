@@ -73,7 +73,7 @@ class Cortex
 	void time_spike();
 	
 	/*!give a number random */
-	double Random_Poisson(double n);
+	int Random_Poisson(double n);
 	
 	/*! Initialise the clock */
 	void setClock(double clock);

@@ -41,6 +41,7 @@ class Neuron
 	double Iext = 0.0;
 	double J; /*! Depend if the neuron is excitatory or inhibitory */
 	std::vector<double> time_spike; /*! Vector where all the spikes are noted */
+	std::vector<int> outgoing_;
 	
 	public:
 	
@@ -62,7 +63,7 @@ class Neuron
 	/** Modify Ring Buffer
 	 * @param : i = numero of the case in the tab
 	 * */
-	void setRingBuffer(size_t i);
+	void setRingBuffer(size_t i, double j);
 	
 	/*! Resize the ring buffer*/
 	void resizeRingBuffer(int i);
@@ -86,12 +87,16 @@ class Neuron
 	
 	std::vector<double> getTimeSpikeVector();
 	
+	std::vector<int> getOutgoing();
+	
+	double getJ();
+	
 	/*! Setteur : */
 	void set_i_ext(double I);
 	
 	void setPotentialPoisson(int n);
 	
-	
+	void setOutgoing(int neu);
 };
 
 #endif

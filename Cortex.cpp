@@ -40,15 +40,16 @@ void Cortex::update_neuron(long Step_start, long Step_end, double ratio)
 		long D = neurons[0]->getDelay() / 0.1; //all neurons have the same delay 
 	
 		while(Step_Clock_ < Step_End) {
+			const auto t_out = ((Step_start + m-1) % m);
+			assert(t_out < m);
 			for(size_t i(0); i < neurons.size(); ++i) {
 				double poisson = Random_Poisson(ratio);
-				if(neurons[i]->update(Step_Clock_, poisson) and (! connexions.empty())) {
+				std::cout << "Poisson = " << poisson << std::endl;
+				if(neurons[i]->update(Step_Clock_, poisson)) {
 				
-					for(size_t j(0); j < Number_Connexion_; ++j) 
+					for(auto element : neurons[i]->getOutgoing()) 
 					{
-						const auto t_out = ((Step_start + m-1) % m);
-						assert(t_out < m);
-						neurons[j]->setRingBuffer(t_out);
+						neurons[element]->setRingBuffer(t_out, neurons[i]->getJ());
 					}
 				}
 			}
@@ -123,18 +124,32 @@ int Cortex::Random_Uniform(unsigned int start, unsigned int stop)
 
 void Cortex::Initialise_Connexions()
 {
-	for(unsigned int i(0); i < Number_Neurons_; ++i) {
+	/*for(unsigned int i(0); i < Number_Neurons_; ++i) {
 		connexions.push_back({});
+		
 		for(unsigned int j(0); j < Number_Connexion_excitator; ++j) {
 			int ran = Random_Uniform(0, Number_Neurons_Excitator);
-			connexions[i].push_back(ran);
+			connexions[ran].push_back(i);
+			neurons[i]->getOutgoing().push_back(ran);
 		}
 		
 		for (unsigned int k(0); k < Number_Connexion_inhibitor; ++k)
 		{
 			int ran = Random_Uniform(Number_Neurons_Excitator, Number_Neurons_);
-			connexions[i].push_back(ran);
-		}
+			connexions[ran].push_back(i);
+			neurons[i]->getOutgoing().push_back(ran);
+		}*/
+		
+		for(unsigned int i(0); i < Number_Neurons_; ++i) {
+			
+			for(unsigned int j(0); j < Number_Connexion_excitator; ++j) {
+				neurons[Random_Uniform(0, Number_Neurons_Excitator)]-> setOutgoing(i);
+			}
+		
+		for (unsigned int k(0); k < Number_Connexion_inhibitor; ++k)
+			{
+				neurons[Random_Uniform(0, Number_Neurons_Inhibitor)]-> setOutgoing(i);
+			}
 	}
 }
 
@@ -150,7 +165,7 @@ void Cortex::Document_Python(std::ofstream &doc)
 	}
 }
 
-double Cortex::Random_Poisson(double n)
+int Cortex::Random_Poisson(double n)
 {
 	static std::random_device rd;
 	static std::mt19937 gen(rd());
