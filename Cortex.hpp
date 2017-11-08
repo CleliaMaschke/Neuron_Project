@@ -6,6 +6,7 @@
 #include "Neuron.hpp"
 #include <cmath>
 #include <fstream>
+
 #ifdef TEST
 #include <gtest/gtest_prod.h>
 #endif
@@ -15,7 +16,7 @@ class Cortex
 	private :
 	
 		#ifdef TEST
-	
+	FRIEND_TEST(cortex, test_connexions);
 		#endif   
 	
 	const unsigned int Number_Neurons_ = 12500; 
@@ -101,6 +102,8 @@ class Cortex
 	 * @param : name of a document to have 4 ones
 	 */
 	void Document_Python(std::ofstream &doc);
+	
+	long getSizeNeurons();
 	
 };
 

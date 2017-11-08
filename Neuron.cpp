@@ -16,12 +16,12 @@ Neuron::Neuron(Neuron const& other)
 
 bool Neuron::update(long step_clock_, double pois)
 {	
+	--step_refractory;
 	//std::cout << "Step refractaire -- = " << step_refractory << std::endl;
 	int position = step % Ring_Buffer_.size();
 	//std::cout << "Dans Neuron::update " << std::endl;
 	if(step_refractory > 0) {
 		potential = 0.0;
-		--step_refractory;
 		return false;
 	} else {
 		if(potential >= potential_seuil) {
@@ -33,7 +33,7 @@ bool Neuron::update(long step_clock_, double pois)
 			return true;
 		} else {
 			//double pois = Random_Poisson();
-			potential = (cte1 * potential + Iext * cte2 + Ring_Buffer_[position])+ pois * Jext; //
+			potential = (cte1 * potential + Iext * cte2 + Ring_Buffer_[position]) + pois * Jext; //
 			
 			//std::cout << "Potential = " << potential << std::endl;
 			//std::cout << "Poisson = " << pois << std::endl;

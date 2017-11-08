@@ -7,7 +7,7 @@ Cortex::Cortex() {}
 Cortex::~Cortex() {}
 
 Cortex::Cortex(Cortex const& other)
-: neurons(other.neurons) {};
+: neurons(other.neurons) {}
 
 void Cortex::initialise_neuron(long start, double Iext, double Ji)
 {
@@ -40,7 +40,7 @@ void Cortex::update_neuron(long Step_start, long Step_end, double ratio)
 		long D = neurons[0]->getDelay() / 0.1; //all neurons have the same delay 
 	
 		while(Step_Clock_ < Step_End) {
-			const auto t_out = (Step_start % m);
+			const auto t_out = ((Step_Clock_ + D) % m);
 			assert(t_out < m);
 			for(size_t i(0); i < neurons.size(); ++i) {
 				double poisson = Random_Poisson(ratio);
@@ -115,31 +115,15 @@ void Cortex::setNeuronInput(int i, double Input)
 
 int Cortex::Random_Uniform(unsigned int start, unsigned int stop)
 {
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(start, stop - 1);
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+	static std::uniform_int_distribution<> dis(start, stop - 1);
 	
 	return dis(gen);
 }
 
 void Cortex::Initialise_Connexions()
 {
-	/*for(unsigned int i(0); i < Number_Neurons_; ++i) {
-		connexions.push_back({});
-		
-		for(unsigned int j(0); j < Number_Connexion_excitator; ++j) {
-			int ran = Random_Uniform(0, Number_Neurons_Excitator);
-			connexions[ran].push_back(i);
-			neurons[i]->getOutgoing().push_back(ran);
-		}
-		
-		for (unsigned int k(0); k < Number_Connexion_inhibitor; ++k)
-		{
-			int ran = Random_Uniform(Number_Neurons_Excitator, Number_Neurons_);
-			connexions[ran].push_back(i);
-			neurons[i]->getOutgoing().push_back(ran);
-		}*/
-		
 		for(unsigned int i(0); i < Number_Neurons_; ++i) {
 			
 			for(unsigned int j(0); j < Number_Connexion_excitator; ++j) {
@@ -177,3 +161,9 @@ int Cortex::Random_Poisson(double n)
 	
 	return d(gen);
 }
+
+long Cortex::getSizeNeurons()
+{
+	return neurons.size();
+}
+

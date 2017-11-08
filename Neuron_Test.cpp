@@ -1,5 +1,6 @@
 #include "Neuron.hpp"
 #include "Cortex.hpp"
+#include "Cortex.hpp"
 #include <iostream>
 #include <cmath>
 #include "gtest/gtest.h"
@@ -52,7 +53,7 @@ TEST(twoNeuron, Connexion_with_oneSpike)
 	//Resize the buffer
 	n1.resizeRingBuffer(n1.getDelay() / 0.1 + 1);
 	n2.resizeRingBuffer(n2.getDelay() / 0.1 + 1);
-	std::cout << "Size of ring buffer : " << n2.getRingBuffer().size() << std::endl;
+	//std::cout << "Size of ring buffer : " << n2.getRingBuffer().size() << std::endl;
 	
 	std::ofstream fichier("Neuron_test.txt");
 	
@@ -64,7 +65,7 @@ TEST(twoNeuron, Connexion_with_oneSpike)
 	for(long i(0); i < 940; ++i) {
 		if(n1.update(i, 0)) { //update neuron 1 and test if he spikes 
 			
-			n2.setRingBuffer((i + D) % m, n1.getJ()); //neuron 2 stores J in his buffer
+			n2.setRingBuffer((i + D) % m, n1.getJ()); //neuron 2 s tores J in his buffer
 			/*std::cout << "Ring buffer [1] : " << n2.getRingBuffer()[0] << std::endl;
 			std::cout << "Ring buffer [2] : " << n2.getRingBuffer()[1] << std::endl;
 			std::cout << "Ring buffer [3] : " << n2.getRingBuffer()[2] << std::endl;
@@ -135,6 +136,12 @@ TEST(twoNeurons, Connexion_with_twoSpikes)
 	EXPECT_EQ(n2.getTimeSpikeVector().size(), 1);
 }
 
+TEST(cortex, test_connexions) 
+{
+	Cortex c;
+	c.initialise_neuron(0, 0.0, -0.5);
+	EXPECT_EQ(c.getSizeNeurons(), 12500);
+}
 
 int main (int argc, char **argv)
 {
