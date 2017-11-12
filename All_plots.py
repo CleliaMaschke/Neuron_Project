@@ -16,7 +16,7 @@ for f in files:
 
 	pl.subplots_adjust(hspace=0.3)
 	pl.subplot(212)
-	n, bins, patches = pl.hist(0.1*data1[0], 50, normed=0, alpha=0.75)
+	n, bins, patches = pl.hist(data1[0],200,range=(1000,1200),normed=0,alpha=0.75)
 	pl.xlabel('time (ms)', color = 'black')
 	pl.ylabel('frequency', color = 'black')
 	output_filename = os.path.splitext(f)[0] + '.png'
