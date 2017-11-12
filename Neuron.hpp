@@ -33,7 +33,6 @@ class Neuron
 	
 	unsigned int spike; /*! Number of spikes */
 	double potential; /*! Membrane Potential */
-	double n_J = 0.0; /*! Number of J not use now */
 	double time_; /*! Time from the start of the experience */ 
 	long step = 0; /*! Number of steps */ 
 	std::vector<double> Ring_Buffer_; /*! Ring buffer to delay the moment */
@@ -56,9 +55,6 @@ class Neuron
 	
 	/*! Calcul the membrane potential at time t + dt */
 	bool update(long step_clock_, double pois);
-	
-	/*! Sum J (not use now) */
-	void sumInput(double J);
 	
 	/** Modify Ring Buffer
 	 * @param : i = numero of the case in the tab

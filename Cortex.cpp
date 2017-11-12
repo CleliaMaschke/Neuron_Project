@@ -26,8 +26,6 @@ void Cortex::initialise_neuron(long start, double Iext, double Ji)
 		neurons[i]->resizeRingBuffer(neurons[i]->getDelay() / dt + 1);
 	}
 	
-	std::cout << "Neurons.size() = " << neurons.size() << std::endl;
-	
 }
 
 
@@ -44,7 +42,7 @@ void Cortex::update_neuron(long Step_start, long Step_end, double ratio)
 			assert(t_out < m);
 			for(size_t i(0); i < neurons.size(); ++i) {
 				double poisson = Random_Poisson(ratio);
-				//std::cout << "Poisson = " << poisson << std::endl;
+	
 				if(neurons[i]->update(Step_Clock_, poisson)) {
 				
 					for(auto element : neurons[i]->getOutgoing()) 
@@ -156,8 +154,6 @@ int Cortex::Random_Poisson(double n)
 	
 	// if an event occurs 0.02 spikes/connection x ms
 	static std::poisson_distribution<> d(n);
-	
-	//std::cout << "Poisson : " << d(gen) << std::endl;
 	
 	return d(gen);
 }

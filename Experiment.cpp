@@ -12,7 +12,6 @@ void Experiment::run_programme(double g, double eta, long start, long stop, doub
 	Cortex c;
 	
 	c.setClock(start);
-	//std::cout << "SetClock()" << std::endl;
 	
 	c.setStepClock(start);
 	
@@ -26,11 +25,6 @@ void Experiment::run_programme(double g, double eta, long start, long stop, doub
 	
 	c.update_neuron(start, stop, n_);
 	std::cout << "Update neuron" << std::endl;
-	
-	//c.time_spike();	
-	
-	/*c.Save_to_file();
-	std::cout << "Time spike" << std::endl;*/
 	
 	c.Document_Python(fiche);
 	std::cout << "Document python" << std::endl;
