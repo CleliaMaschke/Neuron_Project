@@ -4,7 +4,7 @@
 #include <vector>
 #include "Const.hpp"
 #include <cmath>
-
+#include <cassert>
 #ifdef TEST
 #include <gtest/gtest_prod.h>
 #endif

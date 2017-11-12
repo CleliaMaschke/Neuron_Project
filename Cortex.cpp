@@ -11,14 +11,14 @@ Cortex::Cortex(Cortex const& other)
 
 void Cortex::initialise_neuron(long start, double Iext, double Ji)
 {
-	
+	assert(Number_Neurons_Excitator > 0);
 	for(size_t i(0); i < Number_Neurons_Excitator; ++i)
 	{
 		neurons.push_back(new Neuron(0.1));
 		neurons[i]->getTime_(start * dt);
 		neurons[i]->resizeRingBuffer(neurons[i]->getDelay() / dt + 1);
 	}
-
+	assert (Number_Neurons_ > Number_Neurons_Excitator);
 	for(size_t i(Number_Neurons_Excitator); i < Number_Neurons_; ++i)
 	{
 		neurons.push_back(new Neuron(Ji));
@@ -122,12 +122,12 @@ void Cortex::Initialise_Connexions()
 	static std::uniform_int_distribution<> dis_i(Number_Neurons_Excitator, Number_Neurons_ - 1);
 		
 		for(unsigned int i(0); i < Number_Neurons_; ++i) {
-			
+			assert(Number_Connexion_excitator > 0);
 			for(unsigned int j(0); j < Number_Connexion_excitator; ++j) {
 				neurons[dis(gen)]-> setOutgoing(i);
 			}
-		
-		for (unsigned int k(0); k < Number_Connexion_inhibitor; ++k)
+			assert(Number_Connexion_inhibitor > 0);
+			for (unsigned int k(0); k < Number_Connexion_inhibitor; ++k)
 			{
 				neurons[dis_i(gen)]-> setOutgoing(i);
 			}

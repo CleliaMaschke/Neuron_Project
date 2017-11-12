@@ -19,7 +19,7 @@ bool Neuron::update(long step_clock_, double pois)
 	--step_refractory;
 	
 	int position = step % Ring_Buffer_.size();
-	
+	assert(position < Ring_Buffer_.size());
 	if(step_refractory > 0) {
 		potential = 0.0;
 		return false;

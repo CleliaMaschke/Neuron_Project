@@ -9,6 +9,15 @@ void Experiment::run_programme(double g, double eta, long start, long stop, doub
 	
 	double Jin = (-g_ * 0.1); /*! Initialise J inhibitor */
 	
+	assert(Jin < 0);
+	assert(g_ > 0);
+	assert(n_ > 0);
+	
+	std::cout << "Parameters for experiment : " << std::endl;
+	std::cout << "g = " << g_ << std::endl;
+	std::cout << "eta = " << eta << std::endl;
+	std::cout << "J inhibitor = " << Jin << std::endl;
+	
 	Cortex c;
 	
 	c.setClock(start);
