@@ -22,7 +22,7 @@ int main ()
 	Experiment E_;
 	
 	std::ofstream fichierx("Param1.csv");
-	E_.run_programme(3.0, 2.0, 5000, 6000, Iext, fichierx);
+	E_.run_programme(3.0, 2.0, 10000, 12000, Iext, fichierx);
 	fichierx.close();
 	
 	std::ofstream fichiery("Param2.csv");

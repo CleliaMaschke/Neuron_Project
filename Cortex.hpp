@@ -73,9 +73,6 @@ class Cortex
 	/*! Write the time when spike occures in the terminal */
 	void time_spike();
 	
-	/*!give a number random */
-	int Random_Poisson(double n);
-	
 	/*! Initialise the clock */
 	void setClock(double clock);
 	
@@ -90,9 +87,6 @@ class Cortex
 	
 	/*! Add input in one neuron */
 	void setNeuronInput(int i, double Input);
-	
-	/*! Give a random number with the same probability for each */
-	int Random_Uniform(unsigned int start, unsigned int stop);
 	
 	/*! Initialise the connexions between the neurons */
 	void Initialise_Connexions();

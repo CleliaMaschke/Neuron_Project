@@ -32,6 +32,10 @@ void Cortex::initialise_neuron(long start, double Iext, double Ji)
 
 void Cortex::update_neuron(long Step_start, long Step_end, double ratio) 
 {	
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+	static std::poisson_distribution<> d(ratio);
+
 	if((Step_Clock_ >= Step_start) and (Step_Clock_ < Step_end)) {
 	
 		size_t m = neurons[0]->getRingBuffer().size(); // all neurons have the same ring buffer size
@@ -41,9 +45,8 @@ void Cortex::update_neuron(long Step_start, long Step_end, double ratio)
 			const auto t_out = ((Step_Clock_ + D) % m);
 			assert(t_out < m);
 			for(size_t i(0); i < neurons.size(); ++i) {
-				double poisson = Random_Poisson(ratio);
 	
-				if(neurons[i]->update(Step_Clock_, poisson)) {
+				if(neurons[i]->update(Step_Clock_, d(gen))) {
 				
 					for(auto element : neurons[i]->getOutgoing()) 
 					{
@@ -111,26 +114,22 @@ void Cortex::setNeuronInput(int i, double Input)
 	neurons[i]->set_i_ext(Input);
 }
 
-int Cortex::Random_Uniform(unsigned int start, unsigned int stop)
+void Cortex::Initialise_Connexions()
 {
 	static std::random_device rd;
 	static std::mt19937 gen(rd());
-	static std::uniform_int_distribution<> dis(start, stop - 1);
-	
-	return dis(gen);
-}
-
-void Cortex::Initialise_Connexions()
-{
+	static std::uniform_int_distribution<> dis(0, Number_Neurons_Excitator - 1);
+	static std::uniform_int_distribution<> dis_i(Number_Neurons_Excitator, Number_Neurons_ - 1);
+		
 		for(unsigned int i(0); i < Number_Neurons_; ++i) {
 			
 			for(unsigned int j(0); j < Number_Connexion_excitator; ++j) {
-				neurons[Random_Uniform(0, Number_Neurons_Excitator)]-> setOutgoing(i);
+				neurons[dis(gen)]-> setOutgoing(i);
 			}
 		
 		for (unsigned int k(0); k < Number_Connexion_inhibitor; ++k)
 			{
-				neurons[Random_Uniform(Number_Neurons_Excitator, Number_Neurons_)]-> setOutgoing(i);
+				neurons[dis_i(gen)]-> setOutgoing(i);
 			}
 	}
 }
@@ -147,16 +146,6 @@ void Cortex::Document_Python(std::ofstream &doc)
 	}
 }
 
-int Cortex::Random_Poisson(double n)
-{
-	static std::random_device rd;
-	static std::mt19937 gen(rd());
-	
-	// if an event occurs 0.02 spikes/connection x ms
-	static std::poisson_distribution<> d(n);
-	
-	return d(gen);
-}
 
 long Cortex::getSizeNeurons()
 {
